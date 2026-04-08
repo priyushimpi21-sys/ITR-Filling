@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FileMyITR — File Your ITR in 24 Hours | ₹50 Only</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0d1117;
+  --ink2: #24292f;
+  --muted: #57606a;
+  --subtle: #8c959f;
+  --border: #d0d7de;
+  --surface: #ffffff;
+  --bg: #f6f8fa;
+  --accent: #1a3fcb;
+  --accent2: #2451e8;
+  --accent-light: #e8edfb;
+  --green: #1a7f37;
+  --green-light: #e6f4ea;
+  --amber: #9a6700;
+  --amber-light: #fff8c5;
+  --red: #cf222e;
+  --red-light: #ffebe9;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.6; }
+
+/* ── NAV ── */
+nav { position: sticky; top: 0; z-index: 200; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.nav-logo { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); letter-spacing: -0.5px; }
+.nav-links { display: flex; gap: 4px; }
+.nav-links a { font-size: 13px; padding: 6px 12px; border-radius: 6px; color: var(--muted); text-decoration: none; transition: all 0.15s; font-weight: 500; }
+.nav-links a:hover { background: var(--bg); color: var(--ink); }
+.nav-cta { background: var(--accent); color: #fff !important; border-radius: 8px !important; }
+.nav-cta:hover { background: var(--accent2) !important; color: #fff !important; }
+
+/* ── HERO ── */
+.hero { background: var(--ink); color: #fff; padding: 80px 24px 72px; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px); pointer-events: none; }
+.hero-badge { display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: #a8c4ff; font-size: 12px; font-family: 'DM Mono', monospace; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; letter-spacing: 0.05em; }
+.hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700; line-height: 1.15; letter-spacing: -1px; margin-bottom: 16px; }
+.hero h1 span { color: #6b9fff; }
+.hero p { font-size: 1.05rem; color: #8b9ab0; max-width: 520px; margin: 0 auto 32px; }
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-primary { background: var(--accent); color: #fff; border: none; padding: 13px 28px; border-radius: 10px; font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.25); padding: 13px 28px; border-radius: 10px; font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+.btn-outline:hover { background: rgba(255,255,255,0.08); }
+.hero-stats { display: flex; gap: 32px; justify-content: center; margin-top: 48px; flex-wrap: wrap; }
+.hstat { text-align: center; }
+.hstat .num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 700; color: #fff; }
+.hstat .lbl { font-size: 12px; color: #6b7a8d; margin-top: 2px; }
+
+/* ── CONTAINER ── */
+.container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+.container-wide { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+section { padding: 56px 0; }
+.section-label { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; letter-spacing: -0.5px; margin-bottom: 10px; }
+.section-sub { color: var(--muted); font-size: 1rem; max-width: 520px; }
+
+/* ── ITR CARDS ── */
+.itr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 28px; }
+.itr-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: border-color 0.2s, transform 0.2s; cursor: pointer; }
+.itr-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.itr-card.recommended { border-color: var(--accent); border-width: 2px; background: var(--accent-light); }
+.itr-num { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.itr-name { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.itr-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
+.badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; }
+.badge-green { background: var(--green-light); color: var(--green); }
+.badge-blue { background: var(--accent-light); color: var(--accent); }
+.badge-amber { background: var(--amber-light); color: var(--amber); }
+.badge-red { background: var(--red-light); color: var(--red); }
+
+/* ── TAX CALCULATOR ── */
+.calc-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-top: 28px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:560px){ .form-grid { grid-template-columns: 1fr; } }
+.fg label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.fg input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); transition: border 0.15s; }
+.fg input:focus { outline: none; border-color: var(--accent); background: #fff; }
+.calc-btn-main { width: 100%; padding: 13px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; font-family: 'Syne', sans-serif; cursor: pointer; margin-top: 16px; transition: background 0.2s; }
+.calc-btn-main:hover { background: var(--accent2); }
+.result-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+@media(max-width:560px){ .result-panels { grid-template-columns: 1fr; } }
+.result-panel { background: var(--bg); border-radius: 10px; padding: 16px; }
+.rp-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 12px; }
+.rp-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.rp-row:last-child { border: none; font-weight: 600; font-size: 14px; }
+.verdict-box { background: var(--ink); color: #fff; border-radius: 12px; padding: 20px; text-align: center; margin-top: 14px; }
+.verdict-box .big { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; color: #6b9fff; margin: 6px 0; }
+.verdict-box .sub { font-size: 13px; color: #8b9ab0; }
+
+/* ── DEDUCTIONS ── */
+.ded-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 24px; }
+.ded-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.ded-sec { font-size: 10px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+.ded-limit { font-size: 14px; font-weight: 600; color: var(--ink); margin: 3px 0; }
+.ded-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ── RECOMMENDER SPLIT LAYOUT ── */
+.split-section { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; align-items: start; }
+@media(max-width:720px){ .split-section { grid-template-columns: 1fr; } }
+
+/* Left: chatbot */
+.rec-card { background: var(--surface); border: 2px solid var(--accent); border-radius: 16px; padding: 24px; height: 100%; }
+.rec-card-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.rec-card-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.chat-area { min-height: 180px; max-height: 280px; overflow-y: auto; margin-bottom: 14px; display: flex; flex-direction: column; gap: 10px; background: var(--bg); border-radius: 10px; padding: 12px; }
+.msg { max-width: 88%; padding: 10px 13px; border-radius: 12px; font-size: 13px; line-height: 1.55; }
+.msg-bot { background: var(--surface); color: var(--ink); align-self: flex-start; border: 1px solid var(--border); border-radius: 4px 12px 12px 12px; }
+.msg-user { background: var(--accent); color: #fff; align-self: flex-end; border-radius: 12px 4px 12px 12px; }
+.answer-btns { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
+.ans-btn { padding: 7px 13px; border: 1px solid var(--border); border-radius: 8px; font-size: 12px; background: var(--surface); color: var(--ink); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+.ans-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+.rec-result { background: var(--green-light); border: 1px solid #84d49b; border-radius: 12px; padding: 14px; margin-top: 10px; display: none; }
+.rec-result h3 { font-family: 'Syne', sans-serif; font-size: 1rem; color: var(--green); margin-bottom: 5px; }
+.rec-result p { font-size: 12px; color: #2d6a3e; line-height: 1.55; }
+
+/* Right: tax saving panel */
+.tax-save-panel { background: var(--ink); border-radius: 16px; padding: 24px; color: #fff; height: 100%; }
+.tsp-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.tsp-sub { font-size: 12px; color: #6b7a8d; margin-bottom: 16px; }
+.save-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #21262d; }
+.save-item:last-child { border: none; padding-bottom: 0; }
+.save-icon { min-width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.si-blue { background: #1a3fcb22; }
+.si-green { background: #1a7f3722; }
+.si-amber { background: #9a670022; }
+.si-purple { background: #6f42c122; }
+.si-teal { background: #0f766e22; }
+.si-red { background: #cf222e22; }
+.save-body { flex: 1; }
+.save-sec { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b9fff; margin-bottom: 2px; }
+.save-limit { font-size: 13px; font-weight: 600; color: #e6edf3; margin-bottom: 3px; }
+.save-desc { font-size: 11px; color: #6b7a8d; line-height: 1.5; }
+.save-tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; margin-top: 3px; }
+.tag-old { background: #1a3fcb33; color: #6b9fff; }
+.tag-both { background: #1a7f3733; color: #56d364; }
+.tsp-footer { margin-top: 14px; background: #1a3fcb22; border: 1px solid #1a3fcb55; border-radius: 10px; padding: 12px 14px; font-size: 12px; color: #6b9fff; line-height: 1.6; }
+
+/* ── HOW IT WORKS ── */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 28px; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; }
+.step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: #fff; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.step h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.step p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ── CHECKLIST ── */
+.check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 24px; }
+.check-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; }
+.check-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--green-light); border: 1px solid #84d49b; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; font-size: 11px; color: var(--green); }
+.check-item h5 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.check-item p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* ── SLABS ── */
+.slab-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+@media(max-width:580px){ .slab-pair { grid-template-columns: 1fr; } }
+.slab-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+.slab-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.slab-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+.slab-row:last-child { border: none; }
+.tip-box { background: var(--accent-light); border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; color: var(--accent); margin-top: 10px; line-height: 1.6; }
+
+/* ── PAYMENT / INTAKE SECTION ── */
+#file-itr { background: var(--ink); color: #fff; }
+#file-itr .section-label { color: #6b9fff; }
+#file-itr .section-title { color: #fff; }
+#file-itr .section-sub { color: #8b9ab0; }
+.intake-card { background: #161b22; border: 1px solid #30363d; border-radius: 16px; padding: 28px; margin-top: 28px; }
+.intake-steps { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 1px solid #30363d; }
+.istep { flex: 1; padding: 10px 0 12px; font-size: 12px; font-weight: 600; color: #484f58; text-align: center; cursor: default; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.istep.active { color: #6b9fff; border-bottom-color: var(--accent); }
+.istep.done { color: #3fb950; }
+.intake-panel { display: none; }
+.intake-panel.active { display: block; }
+.ifg { margin-bottom: 14px; }
+.ifg label { display: block; font-size: 11px; font-weight: 600; color: #8b9ab0; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
+.ifg input, .ifg select { width: 100%; padding: 10px 12px; border: 1px solid #30363d; border-radius: 8px; font-size: 14px; font-family: 'DM Sans', sans-serif; background: #0d1117; color: #e6edf3; transition: border 0.15s; }
+.ifg input:focus, .ifg select:focus { outline: none; border-color: var(--accent); }
+.ifg select option { background: #161b22; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width:540px){ .two-col { grid-template-columns: 1fr; } }
+.next-btn { width: 100%; padding: 13px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; font-family: 'Syne', sans-serif; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+.next-btn:hover { background: var(--accent2); }
+.qr-box { text-align: center; padding: 20px; }
+.qr-box img { width: 180px; height: 180px; border-radius: 12px; border: 3px solid var(--accent); margin: 12px auto; display: block; }
+.upi-id-display { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 10px 16px; font-family: 'DM Mono', monospace; font-size: 13px; color: #6b9fff; display: inline-block; margin: 8px 0; }
+.utr-input-wrap { margin-top: 16px; }
+.success-box { text-align: center; padding: 28px 20px; }
+.success-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--green-light); border: 2px solid #84d49b; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; }
+.success-box h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; color: #e6edf3; margin-bottom: 8px; }
+.success-box p { font-size: 13px; color: #8b9ab0; line-height: 1.6; }
+.client-id-badge { background: #0d1117; border: 1px solid var(--accent); border-radius: 8px; padding: 10px 16px; font-family: 'DM Mono', monospace; font-size: 14px; color: var(--accent); display: inline-block; margin: 12px 0; letter-spacing: 0.1em; }
+.warning-box { background: #2d1b00; border: 1px solid #7d4e00; border-radius: 10px; padding: 14px 16px; font-size: 12px; color: #d29922; line-height: 1.6; margin-bottom: 16px; }
+
+/* ── 1-MINUTE POPUP ── */
+.popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+.popup-overlay.show { opacity: 1; pointer-events: all; }
+.popup-box { background: #fff; border-radius: 20px; padding: 36px 32px; max-width: 440px; width: 100%; text-align: center; transform: translateY(20px); transition: transform 0.4s; position: relative; }
+.popup-overlay.show .popup-box { transform: translateY(0); }
+.popup-close { position: absolute; top: 14px; right: 14px; background: var(--bg); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 16px; color: var(--muted); display: flex; align-items: center; justify-content: center; }
+.popup-emoji { font-size: 42px; margin-bottom: 12px; }
+.popup-box h2 { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.3px; }
+.popup-box p { font-size: 14px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+.popup-price { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; color: var(--accent); margin: 8px 0 4px; }
+.popup-price span { font-size: 1rem; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; text-decoration: line-through; margin-left: 6px; }
+.popup-btn { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; font-family: 'Syne', sans-serif; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+.popup-btn:hover { background: var(--accent2); }
+.popup-skip { font-size: 12px; color: var(--subtle); margin-top: 12px; cursor: pointer; text-decoration: underline; display: block; }
+.popup-timer { font-size: 11px; color: var(--subtle); margin-top: 6px; font-family: 'DM Mono', monospace; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 13px; z-index: 1000; transform: translateY(80px); opacity: 0; transition: all 0.3s; max-width: 300px; }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── FOOTER ── */
+footer { background: var(--ink2); color: #8b9ab0; padding: 32px 24px; text-align: center; font-size: 12px; }
+footer a { color: #6b9fff; text-decoration: none; }
+
+/* ── UTILS ── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+.mt16 { margin-top: 16px; }
+
+/* ── HERO SPLIT LAYOUT ── */
+.hero-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; max-height: 100vh; overflow: hidden; }
+@media(max-width:860px){ .hero-split { grid-template-columns: 1fr; max-height: none; min-height: auto; } }
+.hero { background: var(--ink); color: #fff; padding: 0; text-align: left; display: flex; align-items: center; overflow: hidden; }
+.hero-inner { padding: 48px 40px; width: 100%; position: relative; z-index: 1; }
+.hero::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px); pointer-events: none; width: 50%; }
+.hero h1 { text-align: left; font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 700; line-height: 1.15; letter-spacing: -1px; margin-bottom: 14px; }
+.hero h1 span { color: #6b9fff; }
+.hero p { text-align: left; font-size: 0.95rem; color: #8b9ab0; max-width: 400px; margin: 0 0 24px; }
+.hero-actions { justify-content: flex-start; }
+.hero-stats { justify-content: flex-start; margin-top: 32px; gap: 24px; }
+.hstat .num { font-size: 1.4rem; }
+.hero-steps { display: flex; align-items: center; gap: 6px; margin-top: 28px; flex-wrap: wrap; }
+.hero-step { display: flex; align-items: center; gap: 6px; }
+.hs-num { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.hs-text { font-size: 12px; color: #8b9ab0; }
+.hs-arrow { color: #30363d; font-size: 14px; }
+
+/* ── ITR PANEL (right side of hero split) ── */
+.itr-panel { background: #f0f3f8; overflow-y: auto; display: flex; align-items: flex-start; }
+.itr-panel-inner { padding: 32px 28px; width: 100%; }
+.itr-panel-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; letter-spacing: -0.3px; }
+.itr-panel-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+.itr-grid-compact { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media(max-width:520px){ .itr-grid-compact { grid-template-columns: 1fr; } }
+.itr-grid-compact .itr-card { padding: 14px; }
+.itr-grid-compact .itr-num { font-size: 1.2rem; margin-bottom: 2px; }
+.itr-grid-compact .itr-name { font-size: 12px; margin-bottom: 4px; }
+.itr-grid-compact .itr-desc { font-size: 11px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">🇮🇳 FileMyITR</div>
+  <div class="nav-links">
+    <a href="#itr-types">ITR Types</a>
+    <a href="#calculator">Calculator</a>
+    <a href="#recommender">Which ITR?</a>
+    <a href="#file-itr" class="nav-cta">File ₹50</a>
+  </div>
+</nav>
+
+<!-- HERO + ITR TYPES SIDE BY SIDE -->
+<div class="hero-split">
+
+  <!-- LEFT: Hero -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">AY 2026-27 &nbsp;|&nbsp; FY 2025-26 &nbsp;|&nbsp; Updated Apr 2026</div>
+      <h1>File Your ITR<br><span>in 24 Hours — ₹50</span></h1>
+      <p>Expert ITR filing, tax saving guide, and regime comparison. We handle everything after you pay.</p>
+      <div class="hero-actions">
+        <a href="#file-itr" class="btn-primary">File My ITR — ₹50</a>
+        <a href="#recommender" class="btn-outline">Which ITR is mine?</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="num">₹50</div><div class="lbl">Flat filing fee</div></div>
+        <div class="hstat"><div class="num">24hr</div><div class="lbl">Filing time</div></div>
+        <div class="hstat"><div class="num">7</div><div class="lbl">ITR types</div></div>
+        <div class="hstat"><div class="num">100%</div><div class="lbl">Online</div></div>
+      </div>
+      <!-- How it works steps — inside hero left -->
+      <div class="hero-steps">
+        <div class="hero-step"><span class="hs-num">1</span><span class="hs-text">Fill details</span></div>
+        <div class="hs-arrow">→</div>
+        <div class="hero-step"><span class="hs-num">2</span><span class="hs-text">Pay ₹50</span></div>
+        <div class="hs-arrow">→</div>
+        <div class="hero-step"><span class="hs-num">3</span><span class="hs-text">Share login</span></div>
+        <div class="hs-arrow">→</div>
+        <div class="hero-step"><span class="hs-num">4</span><span class="hs-text">Done 24hr</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: ITR Types -->
+  <div class="itr-panel" id="itr-types">
+    <div class="itr-panel-inner">
+      <div class="section-label" style="color:#6b9fff">Guide</div>
+      <div class="itr-panel-title">All ITR types</div>
+      <div class="itr-panel-sub">Pick the right form — or use our recommender below.</div>
+      <div class="itr-grid-compact">
+        <div class="itr-card recommended">
+          <div class="badge badge-green">Most common</div>
+          <div class="itr-num">ITR-1</div>
+          <div class="itr-name">Sahaj</div>
+          <div class="itr-desc">Salaried, income ≤ ₹50L, one house, no capital gains.</div>
+        </div>
+        <div class="itr-card">
+          <div class="badge badge-blue">Capital gains</div>
+          <div class="itr-num">ITR-2</div>
+          <div class="itr-name">HNIs & investors</div>
+          <div class="itr-desc">Salary + stocks/MFs/property gains. Income > ₹50L.</div>
+        </div>
+        <div class="itr-card">
+          <div class="badge badge-amber">Freelancers</div>
+          <div class="itr-num">ITR-3</div>
+          <div class="itr-name">Business & profession</div>
+          <div class="itr-desc">Freelancers, consultants, business + salary income.</div>
+        </div>
+        <div class="itr-card">
+          <div class="badge badge-amber">Presumptive</div>
+          <div class="itr-num">ITR-4</div>
+          <div class="itr-name">Sugam</div>
+          <div class="itr-desc">44AD/44ADA/44AE. Turnover ≤ ₹3Cr, prof ≤ ₹75L.</div>
+        </div>
+        <div class="itr-card">
+          <div class="badge badge-red">Firms / LLPs</div>
+          <div class="itr-num">ITR-5</div>
+          <div class="itr-name">Partnership firms</div>
+          <div class="itr-desc">Firms, LLPs, AOPs, BOIs, cooperative societies.</div>
+        </div>
+        <div class="itr-card">
+          <div class="badge badge-red">Companies</div>
+          <div class="itr-num">ITR-6</div>
+          <div class="itr-name">Companies</div>
+          <div class="itr-desc">All companies except Section 11 exemptions.</div>
+        </div>
+        <div class="itr-card">
+          <div class="badge badge-red">Trusts</div>
+          <div class="itr-num">ITR-7</div>
+          <div class="itr-name">Trusts & NGOs</div>
+          <div class="itr-desc">Political parties, trusts, universities under 139(4A/B/C/D).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- RECOMMENDER + TAX SAVING SPLIT -->
+<section id="recommender">
+  <div class="container" style="max-width:1080px">
+    <div class="section-label">Free tools</div>
+    <div class="section-title">Find your ITR & save maximum tax</div>
+    <div class="section-sub">Answer 5 quick questions on the left — and see exactly how to save tax on the right.</div>
+
+    <div class="split-section">
+
+      <!-- LEFT: ITR Recommender chatbot -->
+      <div class="rec-card">
+        <div class="rec-card-title">🤖 Which ITR form is yours?</div>
+        <div class="rec-card-sub">Answer a few questions — we'll find your form instantly.</div>
+        <div class="chat-area" id="chat-area">
+          <div class="msg msg-bot">Hello! 👋 Let's find your correct ITR form. First — are you an individual or a business / firm?</div>
+        </div>
+        <div class="answer-btns" id="answer-btns"></div>
+        <div class="rec-result" id="rec-result">
+          <h3 id="rec-title"></h3>
+          <p id="rec-body"></p>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+            <a href="#file-itr" class="btn-primary" style="font-size:12px;padding:8px 16px">File this ITR — ₹50 →</a>
+            <button onclick="restartRec()" style="font-size:12px;padding:8px 14px;border:1px solid #84d49b;border-radius:8px;background:transparent;color:#1a7f37;cursor:pointer;font-family:'DM Sans',sans-serif">Start over</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Tax saving tips panel -->
+      <div class="tax-save-panel">
+        <div class="tsp-title">💰 How to save maximum tax</div>
+        <div class="tsp-sub">Use these deductions before filing — every rupee counts.</div>
+
+        <div class="save-item">
+          <div class="save-icon si-blue">📋</div>
+          <div class="save-body">
+            <div class="save-sec">Section 80C</div>
+            <div class="save-limit">Save up to ₹46,800</div>
+            <div class="save-desc">Invest ₹1.5L in EPF, PPF, ELSS, LIC, or NSC. Single biggest deduction available.</div>
+            <span class="save-tag tag-old">Old regime only</span>
+          </div>
+        </div>
+
+        <div class="save-item">
+          <div class="save-icon si-teal">🏥</div>
+          <div class="save-body">
+            <div class="save-sec">Section 80D</div>
+            <div class="save-limit">Save up to ₹23,400</div>
+            <div class="save-desc">Pay health insurance for self (₹25k) + parents (₹25k–₹50k). Preventive check ₹5k included.</div>
+            <span class="save-tag tag-old">Old regime only</span>
+          </div>
+        </div>
+
+        <div class="save-item">
+          <div class="save-icon si-purple">🏦</div>
+          <div class="save-body">
+            <div class="save-sec">NPS — 80CCD(1B)</div>
+            <div class="save-limit">Extra ₹15,600 saved</div>
+            <div class="save-desc">Invest ₹50,000 in NPS Tier-1 — over and above the ₹1.5L 80C limit. Best for salaried.</div>
+            <span class="save-tag tag-old">Old regime only</span>
+          </div>
+        </div>
+
+        <div class="save-item">
+          <div class="save-icon si-amber">🏠</div>
+          <div class="save-body">
+            <div class="save-sec">Home Loan — 24(b)</div>
+            <div class="save-limit">Save up to ₹62,400</div>
+            <div class="save-desc">Deduct up to ₹2L interest on self-occupied home loan. Plus principal under 80C.</div>
+            <span class="save-tag tag-old">Old regime only</span>
+          </div>
+        </div>
+
+        <div class="save-item">
+          <div class="save-icon si-green">✅</div>
+          <div class="save-body">
+            <div class="save-sec">Standard Deduction</div>
+            <div class="save-limit">₹50k old / ₹75k new</div>
+            <div class="save-desc">Automatic flat deduction for all salaried. No proof needed. Already in Form 16.</div>
+            <span class="save-tag tag-both">Both regimes</span>
+          </div>
+        </div>
+
+        <div class="save-item">
+          <div class="save-icon si-red">🎯</div>
+          <div class="save-body">
+            <div class="save-sec">Section 87A Rebate</div>
+            <div class="save-limit">New regime: ZERO tax up to ₹12L</div>
+            <div class="save-desc">If taxable income ≤ ₹12L in new regime, full ₹60,000 rebate applies — you pay nothing.</div>
+            <span class="save-tag tag-both">Both regimes</span>
+          </div>
+        </div>
+
+        <div class="tsp-footer">
+          💡 <strong>Quick tip:</strong> Use our tax calculator above to see exactly how much each deduction saves you in both regimes. Most salaried people save ₹30,000–₹80,000 by claiming all deductions.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TAX CALCULATOR -->
+<section id="calculator">
+  <div class="container">
+    <div class="section-label">Free calculator</div>
+    <div class="section-title">Old regime vs new regime</div>
+    <div class="section-sub">Compare both tax regimes instantly and find out how much you save.</div>
+    <div class="calc-card">
+      <div class="form-grid">
+        <div class="fg"><label>Gross annual salary (₹)</label><input type="number" id="c-sal" placeholder="e.g. 800000"></div>
+        <div class="fg"><label>Other income — interest, rent (₹)</label><input type="number" id="c-oth" placeholder="0" value="0"></div>
+        <div class="fg"><label>Sec 80C investments (max ₹1,50,000)</label><input type="number" id="c-80c" placeholder="0" value="0"></div>
+        <div class="fg"><label>Sec 80D health insurance (₹)</label><input type="number" id="c-80d" placeholder="0" value="0"></div>
+        <div class="fg"><label>HRA exemption (₹)</label><input type="number" id="c-hra" placeholder="0" value="0"></div>
+        <div class="fg"><label>NPS 80CCD(1B) (max ₹50,000)</label><input type="number" id="c-nps" placeholder="0" value="0"></div>
+        <div class="fg"><label>Home loan interest 24(b)</label><input type="number" id="c-hl" placeholder="0" value="0"></div>
+        <div class="fg"><label>TDS already deducted (Form 26AS)</label><input type="number" id="c-tds" placeholder="0" value="0"></div>
+      </div>
+      <button class="calc-btn-main" onclick="calcTax()">Calculate & Compare Both Regimes →</button>
+      <div id="calc-result" style="display:none">
+        <div class="result-panels">
+          <div class="result-panel">
+            <div class="rp-title">Old Regime</div>
+            <div class="rp-row"><span>Gross income</span><span id="o-g"></span></div>
+            <div class="rp-row"><span>Total deductions</span><span id="o-d"></span></div>
+            <div class="rp-row"><span>Taxable income</span><span id="o-i"></span></div>
+            <div class="rp-row"><span>87A rebate</span><span id="o-r"></span></div>
+            <div class="rp-row"><span>Net tax + 4% cess</span><span id="o-n"></span></div>
+          </div>
+          <div class="result-panel">
+            <div class="rp-title">New Regime (AY 2026-27)</div>
+            <div class="rp-row"><span>Gross income</span><span id="n-g"></span></div>
+            <div class="rp-row"><span>Std. deduction</span><span id="n-d">₹75,000</span></div>
+            <div class="rp-row"><span>Taxable income</span><span id="n-i"></span></div>
+            <div class="rp-row"><span>87A rebate</span><span id="n-r"></span></div>
+            <div class="rp-row"><span>Net tax + 4% cess</span><span id="n-n"></span></div>
+          </div>
+        </div>
+        <div class="verdict-box">
+          <div style="font-size:12px;color:#8b9ab0;text-transform:uppercase;letter-spacing:0.08em">Recommended</div>
+          <div class="big" id="v-reg"></div>
+          <div class="sub" id="v-save"></div>
+          <div class="sub mt16" id="v-status"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DEDUCTIONS -->
+<section id="deductions">
+  <div class="container">
+    <div class="section-label">Tax saving</div>
+    <div class="section-title">All deductions you can claim</div>
+    <div class="section-sub">Old regime only — new regime allows only standard deduction + employer NPS.</div>
+    <div class="ded-grid">
+      <div class="ded-card"><div class="ded-sec">Section 80C</div><div class="ded-limit">Up to ₹1,50,000</div><div class="ded-desc">EPF, PPF, LIC, ELSS, NSC, home loan principal, tuition fees, 5-yr FD, SSY</div></div>
+      <div class="ded-card"><div class="ded-sec">Section 80D</div><div class="ded-limit">Up to ₹75,000</div><div class="ded-desc">Health insurance — self+family ₹25k, parents below 60 ₹25k, senior parents ₹50k</div></div>
+      <div class="ded-card"><div class="ded-sec">HRA Exemption</div><div class="ded-limit">Least of 3 conditions</div><div class="ded-desc">Actual HRA; 50% salary metro / 40% non-metro; rent paid minus 10% salary</div></div>
+      <div class="ded-card"><div class="ded-sec">Section 80E</div><div class="ded-limit">Full interest — no limit</div><div class="ded-desc">Education loan interest for self / spouse / children — for 8 years</div></div>
+      <div class="ded-card"><div class="ded-sec">Section 24(b)</div><div class="ded-limit">Up to ₹2,00,000</div><div class="ded-desc">Home loan interest on self-occupied property</div></div>
+      <div class="ded-card"><div class="ded-sec">NPS 80CCD(1B)</div><div class="ded-limit">Extra ₹50,000</div><div class="ded-desc">Over and above 80C. Employer NPS under 80CCD(2) has no limit.</div></div>
+      <div class="ded-card"><div class="ded-sec">Section 80G</div><div class="ded-limit">50% or 100%</div><div class="ded-desc">Donations to approved institutions. PM Relief Fund: 100%.</div></div>
+      <div class="ded-card"><div class="ded-sec">Section 87A Rebate</div><div class="ded-limit">Old: ₹12,500 | New: ₹60,000</div><div class="ded-desc">Old: income ≤ ₹5L. New: income ≤ ₹12L = zero tax!</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TAX SLABS -->
+<section id="slabs">
+  <div class="container">
+    <div class="section-label">Reference</div>
+    <div class="section-title">Tax slabs — AY 2026-27</div>
+    <div class="slab-pair">
+      <div class="slab-card">
+        <h4>Old Regime</h4>
+        <div class="slab-row"><span>Up to ₹2,50,000</span><span class="badge badge-green">Nil</span></div>
+        <div class="slab-row"><span>₹2.5L – ₹5L</span><span class="badge badge-blue">5%</span></div>
+        <div class="slab-row"><span>₹5L – ₹10L</span><span class="badge badge-amber">20%</span></div>
+        <div class="slab-row"><span>Above ₹10L</span><span class="badge badge-red">30%</span></div>
+        <div class="tip-box">87A rebate ₹12,500 if income ≤ ₹5L. Std deduction ₹50,000.</div>
+      </div>
+      <div class="slab-card">
+        <h4>New Regime (default from FY 2024-25)</h4>
+        <div class="slab-row"><span>Up to ₹4,00,000</span><span class="badge badge-green">Nil</span></div>
+        <div class="slab-row"><span>₹4L – ₹8L</span><span class="badge badge-blue">5%</span></div>
+        <div class="slab-row"><span>₹8L – ₹12L</span><span class="badge badge-blue">10%</span></div>
+        <div class="slab-row"><span>₹12L – ₹16L</span><span class="badge badge-amber">15%</span></div>
+        <div class="slab-row"><span>₹16L – ₹20L</span><span class="badge badge-amber">20%</span></div>
+        <div class="slab-row"><span>₹20L – ₹24L</span><span class="badge badge-red">25%</span></div>
+        <div class="slab-row"><span>Above ₹24L</span><span class="badge badge-red">30%</span></div>
+        <div class="tip-box">87A rebate ₹60,000 if income ≤ ₹12L = effectively zero tax! Std deduction ₹75,000.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DOCUMENTS CHECKLIST -->
+<section id="checklist">
+  <div class="container">
+    <div class="section-label">Prepare</div>
+    <div class="section-title">Documents you need</div>
+    <div class="check-grid">
+      <div class="check-item"><div class="check-icon">✓</div><div><h5>Form 16 (Part A & B)</h5><p>From employer — TDS certificate. Mandatory for salaried.</p></div></div>
+      <div class="check-item"><div class="check-icon">✓</div><div><h5>Form 26AS / AIS</h5><p>Download from TRACES. Verify all TDS credits before filing.</p></div></div>
+      <div class="check-item"><div class="check-icon">✓</div><div><h5>Bank statements</h5><p>For interest income, dividends, FD maturity.</p></div></div>
+      <div class="check-item"><div class="check-icon">✓</div><div><h5>80C investment proofs</h5><p>PPF statement, LIC receipts, ELSS statement, NSC.</p></div></div>
+      <div class="check-item"><div class="check-icon">✓</div><div><h5>Health insurance receipts</h5><p>For 80D — self, family, parents. Premium paid.</p></div></div>
+      <div class="check-item"><div class="check-icon">✓</div><div><h5>Home loan certificate</h5><p>Annual interest + principal from lender for 24(b) & 80C.</p></div></div>
+      <div class="check-item"><div class="check-icon">✓</div><div><h5>Rent receipts (HRA)</h5><p>Monthly receipts + landlord PAN if rent > ₹1L/year.</p></div></div>
+      <div class="check-item"><div class="check-icon">✓</div><div><h5>PAN + Aadhaar linked</h5><p>Must be linked. Verify on incometax.gov.in before filing.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FILE MY ITR -->
+<section id="file-itr">
+  <div class="container">
+    <div class="section-label">Get started</div>
+    <div class="section-title">File My ITR — ₹50 Flat</div>
+    <div class="section-sub">We file your ITR on the income tax portal within 24 hours. No office visit needed.</div>
+    <div class="intake-card">
+      <!-- Step tabs -->
+      <div class="intake-steps">
+        <div class="istep active" id="tab1">1. Your details</div>
+        <div class="istep" id="tab2">2. Income & deductions</div>
+        <div class="istep" id="tab3">3. Payment — ₹50</div>
+        <div class="istep" id="tab4">4. Portal access</div>
+        <div class="istep" id="tab5">5. Done!</div>
+      </div>
+
+      <!-- Panel 1: Basic details -->
+      <div class="intake-panel active" id="panel1">
+        <div class="two-col">
+          <div class="ifg"><label>Full name (as on PAN)</label><input type="text" id="f-name" placeholder="e.g. Shubham Udayraj Kapure"></div>
+          <div class="ifg"><label>PAN number</label><input type="text" id="f-pan" placeholder="ABCDE1234F" maxlength="10" style="text-transform:uppercase"></div>
+        </div>
+        <div class="two-col">
+          <div class="ifg"><label>Date of birth</label><input type="date" id="f-dob"></div>
+          <div class="ifg"><label>Mobile number</label><input type="tel" id="f-mobile" placeholder="10-digit mobile"></div>
+        </div>
+        <div class="ifg"><label>Email address</label><input type="email" id="f-email" placeholder="your@email.com"></div>
+        <div class="two-col">
+          <div class="ifg"><label>City / State</label><input type="text" id="f-city" placeholder="e.g. Pune, Maharashtra"></div>
+          <div class="ifg"><label>Recommended ITR form</label>
+            <select id="f-itr">
+              <option value="">-- Select --</option>
+              <option value="ITR-1">ITR-1 (Sahaj) — Salaried, income ≤ ₹50L</option>
+              <option value="ITR-2">ITR-2 — Capital gains / income > ₹50L</option>
+              <option value="ITR-3">ITR-3 — Business / freelance</option>
+              <option value="ITR-4">ITR-4 (Sugam) — Presumptive tax</option>
+            </select>
+          </div>
+        </div>
+        <button class="next-btn" onclick="goPanel(2)">Next: Income details →</button>
+      </div>
+
+      <!-- Panel 2: Income -->
+      <div class="intake-panel" id="panel2">
+        <div class="two-col">
+          <div class="ifg"><label>Gross annual salary (₹)</label><input type="number" id="f-sal" placeholder="e.g. 800000"></div>
+          <div class="ifg"><label>Other income (₹)</label><input type="number" id="f-oth" placeholder="0" value="0"></div>
+        </div>
+        <div class="two-col">
+          <div class="ifg"><label>Sec 80C investments (₹)</label><input type="number" id="f-80c" placeholder="0" value="0"></div>
+          <div class="ifg"><label>Sec 80D health insurance (₹)</label><input type="number" id="f-80d" placeholder="0" value="0"></div>
+        </div>
+        <div class="two-col">
+          <div class="ifg"><label>HRA exemption (₹)</label><input type="number" id="f-hra" placeholder="0" value="0"></div>
+          <div class="ifg"><label>Home loan interest (₹)</label><input type="number" id="f-hl" placeholder="0" value="0"></div>
+        </div>
+        <div class="two-col">
+          <div class="ifg"><label>TDS deducted (from Form 26AS)</label><input type="number" id="f-tds" placeholder="0" value="0"></div>
+          <div class="ifg"><label>Preferred regime</label>
+            <select id="f-regime">
+              <option value="recommend">Recommend for me</option>
+              <option value="old">Old Regime</option>
+              <option value="new">New Regime</option>
+            </select>
+          </div>
+        </div>
+        <div class="ifg"><label>Additional notes (optional)</label><input type="text" id="f-notes" placeholder="e.g. have rental income, NPS contribution, etc."></div>
+        <button class="next-btn" onclick="goPanel(3)">Next: Payment →</button>
+      </div>
+
+      <!-- Panel 3: Payment -->
+      <div class="intake-panel" id="panel3">
+        <div class="qr-box">
+          <div style="font-size:14px;color:#8b9ab0;margin-bottom:8px">Scan & pay ₹50 via any UPI app</div>
+          <div class="popup-price">₹50 <span>₹500</span></div>
+          <div style="font-size:12px;color:#8b9ab0;margin-bottom:12px">One-time flat fee. No hidden charges.</div>
+          <img id="upi-qr" src="" alt="UPI QR Code">
+          <div class="upi-id-display" id="upi-display">Loading UPI ID...</div>
+          <div style="font-size:11px;color:#8b9ab0;margin-top:6px">Works with GPay, PhonePe, Paytm, any UPI app</div>
+        </div>
+        <div class="utr-input-wrap">
+          <div class="ifg"><label>Enter UTR / Transaction ID after payment</label><input type="text" id="f-utr" placeholder="e.g. 426789123456 (12-digit UTR)"></div>
+          <button class="next-btn" onclick="verifyPayment()">Confirm Payment & Continue →</button>
+        </div>
+      </div>
+
+      <!-- Panel 4: Credentials -->
+      <div class="intake-panel" id="panel4">
+        <div class="warning-box">
+          ⚠️ <strong>Security note:</strong> Your credentials are used only to file your ITR on incometax.gov.in. We do not store your password in any database. It is used once and immediately discarded after filing. We recommend changing your password after we complete filing.
+        </div>
+        <div class="two-col">
+          <div class="ifg">
+            <label>IT Portal User ID (PAN)</label>
+            <input type="text" id="f-uid" placeholder="Your PAN number" style="font-family:'DM Mono',monospace;text-transform:uppercase">
+          </div>
+          <div class="ifg">
+            <label>IT Portal Password</label>
+            <div style="position:relative">
+              <input type="text" id="f-pwd" placeholder="Your incometax.gov.in password" style="width:100%;padding-right:44px">
+              <button onclick="togglePwd('f-pwd','eye1')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#8b9ab0;font-size:12px;padding:0;white-space:nowrap" id="eye1">🙈 Hide</button>
+            </div>
+          </div>
+        </div>
+        <div class="ifg">
+          <label>Confirm password</label>
+          <div style="position:relative">
+            <input type="text" id="f-pwd2" placeholder="Re-enter password" style="width:100%;padding-right:54px">
+            <button onclick="togglePwd('f-pwd2','eye2')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#8b9ab0;font-size:12px;padding:0;white-space:nowrap" id="eye2">🙈 Hide</button>
+          </div>
+        </div>
+        <div style="background:#162032;border:1px solid #1a3fcb55;border-radius:8px;padding:10px 14px;font-size:11px;color:#6b9fff;margin-bottom:12px;line-height:1.6">
+          🔐 Password is shown so you can verify it is correct before submitting. Your data is transmitted securely.
+        </div>
+        <button class="next-btn" onclick="submitAll()">Submit & File My ITR →</button>
+      </div>
+
+      <!-- Panel 5: Success -->
+      <div class="intake-panel" id="panel5">
+        <div class="success-box">
+          <div class="success-icon">✓</div>
+          <h3>Request Received!</h3>
+          <p>Thank you <strong id="success-name"></strong>! Your ITR filing request has been submitted successfully.</p>
+          <div class="client-id-badge" id="success-id"></div>
+          <p style="margin-top:12px">We will file your ITR within <strong style="color:#3fb950">24 hours</strong> and send the acknowledgement PDF to your email.</p>
+          <p style="margin-top:8px;font-size:12px;color:#484f58">Save your unique client ID above for future reference.</p>
+          <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <a href="#calculator" class="btn-primary" style="font-size:13px;padding:9px 20px">Calculate tax savings</a>
+            <a href="#itr-types" class="btn-outline" style="font-size:13px;padding:9px 20px;background:transparent;border:1px solid #30363d;color:#e6edf3">Learn about ITR types</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>FileMyITR &nbsp;|&nbsp; AY 2026-27 &nbsp;|&nbsp; For educational & filing assistance only &nbsp;|&nbsp; <a href="/cdn-cgi/l/email-protection#265553565649545266404f4a434b5f4f5254084f48"><span class="__cf_email__" data-cfemail="7c0f090c0c130e083c1a151019110515080e521512">[email&#160;protected]</span></a></p>
+  <p style="margin-top:6px;font-size:11px">We are not affiliated with the Income Tax Department of India. Always verify your filed return on incometax.gov.in.</p>
+</footer>
+
+<!-- 1-MINUTE POPUP -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <button class="popup-close" onclick="closePopup()">✕</button>
+    <div class="popup-emoji">📋</div>
+    <h2>File Your ITR — We Handle Everything!</h2>
+    <p>Tired of the confusing IT portal? Let us file your Income Tax Return for you — quickly, accurately, and cheaply.</p>
+    <div class="popup-price">₹50 <span>₹500</span></div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:4px">One-time. No subscription. No hidden charges.</div>
+    <button class="popup-btn" onclick="closePopupAndScroll()">Yes! File My ITR for ₹50 →</button>
+    <span class="popup-skip" onclick="closePopup()">No thanks, I'll do it myself</span>
+    <div class="popup-timer" id="popup-timer"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ── APPS SCRIPT WEB APP URL — REPLACE THIS ── -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── SHOW/HIDE PASSWORD ── */
+function togglePwd(inputId, btnId) {
+  const input = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  if (input.type === 'text') {
+    input.type = 'password';
+    btn.textContent = '👁 Show';
+  } else {
+    input.type = 'text';
+    btn.textContent = '🙈 Hide';
+  }
+}
+
+const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const UPI_ID = 'priyushimpi21@okicici';
+const UPI_NAME = 'FileMy ITR';
+const AMOUNT = 50;
+
+/* ── QR CODE ── */
+function makeQR() {
+  const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${AMOUNT}&cu=INR&tn=ITR+Filing+Fee`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+  document.getElementById('upi-qr').src = qrUrl;
+  document.getElementById('upi-display').textContent = UPI_ID;
+}
+makeQR();
+
+/* ── 1-MINUTE POPUP ── */
+let popupShown = false;
+setTimeout(() => {
+  if (!popupShown) { document.getElementById('popup').classList.add('show'); popupShown = true; }
+}, 60000);
+function closePopup() { document.getElementById('popup').classList.remove('show'); }
+function closePopupAndScroll() { closePopup(); document.getElementById('file-itr').scrollIntoView({ behavior: 'smooth' }); }
+
+/* ── TOAST ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* ── PANEL NAVIGATION ── */
+function goPanel(n) {
+  if (n === 2) {
+    const name = document.getElementById('f-name').value.trim();
+    const pan = document.getElementById('f-pan').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const mobile = document.getElementById('f-mobile').value.trim();
+    if (!name || !pan || !email || !mobile) { showToast('Please fill all required fields'); return; }
+    if (pan.length !== 10) { showToast('PAN must be 10 characters'); return; }
+  }
+  document.querySelectorAll('.intake-panel').forEach((p, i) => p.classList.toggle('active', i === n - 1));
+  document.querySelectorAll('.istep').forEach((t, i) => {
+    t.classList.remove('active', 'done');
+    if (i < n - 1) t.classList.add('done');
+    if (i === n - 1) t.classList.add('active');
+  });
+}
+
+/* ── VERIFY PAYMENT ── */
+function verifyPayment() {
+  const utr = document.getElementById('f-utr').value.trim();
+  if (!utr || utr.length < 6) { showToast('Please enter a valid UTR / Transaction ID'); return; }
+  showToast('Payment recorded! Proceeding...');
+  setTimeout(() => goPanel(4), 800);
+}
+
+/* ── SUBMIT ALL ── */
+async function submitAll() {
+  const pwd = document.getElementById('f-pwd').value;
+  const pwd2 = document.getElementById('f-pwd2').value;
+  if (!pwd || pwd !== pwd2) { showToast('Passwords do not match'); return; }
+  if (pwd.length < 6) { showToast('Password seems too short'); return; }
+
+  const clientId = document.getElementById('f-pan').value.toUpperCase() + '_' + Date.now().toString().slice(-4);
+  const name = document.getElementById('f-name').value;
+
+  const payload = {
+    clientId,
+    name,
+    pan: document.getElementById('f-pan').value.toUpperCase(),
+    dob: document.getElementById('f-dob').value,
+    mobile: document.getElementById('f-mobile').value,
+    email: document.getElementById('f-email').value,
+    city: document.getElementById('f-city').value,
+    itrForm: document.getElementById('f-itr').value,
+    salary: document.getElementById('f-sal').value,
+    otherIncome: document.getElementById('f-oth').value,
+    sec80c: document.getElementById('f-80c').value,
+    sec80d: document.getElementById('f-80d').value,
+    hra: document.getElementById('f-hra').value,
+    homeLoan: document.getElementById('f-hl').value,
+    tds: document.getElementById('f-tds').value,
+    regime: document.getElementById('f-regime').value,
+    notes: document.getElementById('f-notes').value,
+    utr: document.getElementById('f-utr').value,
+    portalUserId: document.getElementById('f-uid').value.toUpperCase(),
+    portalPassword: document.getElementById('f-pwd').value,
+    submittedAt: new Date().toISOString(),
+    status: 'Pending'
+  };
+
+  document.querySelector('#panel4 .next-btn').textContent = 'Submitting...';
+  document.querySelector('#panel4 .next-btn').disabled = true;
+
+  try {
+    if (APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    }
+  } catch (e) { console.log('Submission note:', e); }
+
+  document.getElementById('success-name').textContent = name.split(' ')[0];
+  document.getElementById('success-id').textContent = clientId;
+  goPanel(5);
+}
+
+/* ── ITR RECOMMENDER ── */
+const questions = [
+  { id: 'q1', text: 'Are you an individual or a business / firm?', opts: [['Individual / Person','ind'],['Firm / Company / LLP','biz']] },
+  { id: 'q2', text: 'What is your primary source of income?', opts: [['Salary from employer','sal'],['Freelance / consulting','free'],['Business (goods/services)','biz2'],['Investments only','inv']] },
+  { id: 'q3', text: 'Is your total income above ₹50 lakh per year?', opts: [['No — below ₹50 lakh','low'],['Yes — above ₹50 lakh','high']] },
+  { id: 'q4', text: 'Do you have capital gains? (stocks, mutual funds, property sold)', opts: [['No capital gains','no'],['Yes, I have capital gains','yes']] },
+  { id: 'q5', text: 'Do you have more than one house property?', opts: [['No — one or none','no'],['Yes — more than one','yes']] },
+];
+let qIdx = 0, answers = {};
+function startRec() {
+  qIdx = 0; answers = {};
+  showQuestion(0);
+}
+function showQuestion(i) {
+  const q = questions[i];
+  const chatArea = document.getElementById('chat-area');
+  const msg = document.createElement('div');
+  msg.className = 'msg msg-bot';
+  msg.textContent = q.text;
+  chatArea.appendChild(msg);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  const btnWrap = document.getElementById('answer-btns');
+  btnWrap.innerHTML = '';
+  q.opts.forEach(([label, val]) => {
+    const b = document.createElement('button');
+    b.className = 'ans-btn';
+    b.textContent = label;
+    b.onclick = () => handleAnswer(val, label, i);
+    btnWrap.appendChild(b);
+  });
+}
+function handleAnswer(val, label, i) {
+  answers[questions[i].id] = val;
+  const chatArea = document.getElementById('chat-area');
+  const um = document.createElement('div');
+  um.className = 'msg msg-user';
+  um.textContent = label;
+  chatArea.appendChild(um);
+  document.getElementById('answer-btns').innerHTML = '';
+  chatArea.scrollTop = chatArea.scrollHeight;
+  // logic
+  if (i === 0 && val === 'biz') { showResult('ITR-5 or ITR-6', 'For firms, LLPs, and companies. ITR-5 for partnership firms/LLPs, ITR-6 for companies. Please consult a CA for business returns.'); return; }
+  if (i === 1 && val === 'free') { showResult('ITR-3', 'You have freelance / professional income. ITR-3 is required for individuals with business or professional income along with any other income.'); return; }
+  if (i === 1 && val === 'biz2') { showResult('ITR-3 or ITR-4', 'For business income. If your turnover is ≤ ₹3 Cr and you opt for presumptive taxation under Sec 44AD, use ITR-4 (Sugam). Otherwise use ITR-3.'); return; }
+  if (i === 1 && val === 'inv') { showResult('ITR-2', 'For investment income (capital gains, dividends). Since you don\'t have a salary, ITR-2 covers capital gains and other income sources.'); return; }
+  if (i < questions.length - 1) { setTimeout(() => showQuestion(i + 1), 400); }
+  else { finalRec(); }
+}
+function finalRec() {
+  const high = answers.q3 === 'high';
+  const cg = answers.q4 === 'yes';
+  const multi = answers.q5 === 'yes';
+  if (!high && !cg && !multi) { showResult('ITR-1 (Sahaj)', 'Great news! You qualify for the simplest form. ITR-1 is for salaried individuals with income up to ₹50 lakh, one house, and other simple income sources.'); }
+  else { showResult('ITR-2', 'You need ITR-2 because you have either capital gains, income above ₹50 lakh, or more than one house property. ITR-2 covers all these scenarios.'); }
+}
+function showResult(form, reason) {
+  const r = document.getElementById('rec-result');
+  document.getElementById('rec-title').textContent = 'Recommended: ' + form;
+  document.getElementById('rec-body').textContent = reason;
+  r.style.display = 'block';
+  document.getElementById('answer-btns').innerHTML = '';
+  document.getElementById('f-itr').value = form.split(' ')[0];
+}
+// Init recommender
+(function() {
+  const btnWrap = document.getElementById('answer-btns');
+  btnWrap.innerHTML = '';
+  questions[0].opts.forEach(([label, val]) => {
+    const b = document.createElement('button');
+    b.className = 'ans-btn';
+    b.textContent = label;
+    b.onclick = () => handleAnswer(val, label, 0);
+    btnWrap.appendChild(b);
+  });
+})();
+
+function restartRec() {
+  document.getElementById('chat-area').innerHTML = '<div class="msg msg-bot">Hello! 👋 Let\'s find your correct ITR form. First — are you an individual or a business / firm?</div>';
+  document.getElementById('rec-result').style.display = 'none';
+  const btnWrap = document.getElementById('answer-btns');
+  btnWrap.innerHTML = '';
+  questions[0].opts.forEach(([label, val]) => {
+    const b = document.createElement('button');
+    b.className = 'ans-btn';
+    b.textContent = label;
+    b.onclick = () => handleAnswer(val, label, 0);
+    btnWrap.appendChild(b);
+  });
+}
+
+/* ── TAX CALCULATOR ── */
+function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+function oldTax(inc) {
+  let t = 0;
+  if (inc > 1000000) t = 112500 + (inc - 1000000) * 0.30;
+  else if (inc > 500000) t = 12500 + (inc - 500000) * 0.20;
+  else if (inc > 250000) t = (inc - 250000) * 0.05;
+  const reb = inc <= 500000 ? Math.min(t, 12500) : 0;
+  t -= reb;
+  return { reb, net: Math.round(t + t * 0.04) };
+}
+function newTax(inc) {
+  const slabs = [[400000,0],[400000,.05],[400000,.10],[400000,.15],[400000,.20],[400000,.25],[Infinity,.30]];
+  let t = 0, rem = inc;
+  for (const [s, r] of slabs) { if (rem <= 0) break; t += Math.min(rem, s) * r; rem -= s; }
+  const reb = inc <= 1200000 ? Math.min(t, 60000) : 0;
+  t -= reb;
+  return { reb, net: Math.round(t + t * 0.04) };
+}
+function calcTax() {
+  const sal = +document.getElementById('c-sal').value || 0;
+  if (!sal) { showToast('Please enter your salary'); return; }
+  const oth = +document.getElementById('c-oth').value || 0;
+  const c80 = Math.min(+document.getElementById('c-80c').value || 0, 150000);
+  const c80d = Math.min(+document.getElementById('c-80d').value || 0, 75000);
+  const hra = +document.getElementById('c-hra').value || 0;
+  const nps = Math.min(+document.getElementById('c-nps').value || 0, 50000);
+  const hl = Math.min(+document.getElementById('c-hl').value || 0, 200000);
+  const tds = +document.getElementById('c-tds').value || 0;
+  const gross = sal + oth;
+  const oldDed = 50000 + c80 + c80d + hra + nps + hl;
+  const oldInc = Math.max(0, gross - oldDed);
+  const oR = oldTax(oldInc);
+  const newInc = Math.max(0, gross - 75000);
+  const nR = newTax(newInc);
+  document.getElementById('o-g').textContent = fmt(gross);
+  document.getElementById('o-d').textContent = fmt(oldDed);
+  document.getElementById('o-i').textContent = fmt(oldInc);
+  document.getElementById('o-r').textContent = '- ' + fmt(oR.reb);
+  document.getElementById('o-n').textContent = fmt(oR.net);
+  document.getElementById('n-g').textContent = fmt(gross);
+  document.getElementById('n-i').textContent = fmt(newInc);
+  document.getElementById('n-r').textContent = '- ' + fmt(nR.reb);
+  document.getElementById('n-n').textContent = fmt(nR.net);
+  const better = oR.net <= nR.net ? 'Old Regime' : 'New Regime';
+  const save = Math.abs(oR.net - nR.net);
+  const best = Math.min(oR.net, nR.net);
+  const due = best - tds;
+  document.getElementById('v-reg').textContent = better + ' saves you ' + fmt(save);
+  document.getElementById('v-save').textContent = 'Go with ' + better + ' for AY 2026-27';
+  document.getElementById('v-status').textContent = due > 0 ? 'Tax still due: ' + fmt(due) + ' — pay via Challan 280' : due < 0 ? 'Refund due: ' + fmt(Math.abs(due)) + ' 
