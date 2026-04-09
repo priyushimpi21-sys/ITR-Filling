@@ -222,6 +222,24 @@ section { padding: 56px 0; }
 footer { background: var(--ink2); color: #8b9ab0; padding: 32px 24px; text-align: center; font-size: 12px; }
 footer a { color: #6b9fff; text-decoration: none; }
 
+/* ── DOCUMENT UPLOAD ROWS ── */
+.doc-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #21262d; flex-wrap:wrap; }
+.doc-row:last-child { border:none; }
+.doc-info { flex:1; min-width:180px; }
+.doc-name { font-size:13px; color:#e6edf3; font-weight:500; display:block; }
+.doc-req { font-size:10px; color:#484f58; margin-top:2px; display:block; }
+.doc-status { font-size:11px; color:#484f58; min-width:90px; }
+.doc-status.uploaded { color:#3fb950; }
+.doc-upload-btn { background:#21262d; border:1px solid #30363d; border-radius:6px; color:#8b9ab0; font-size:12px; padding:5px 12px; cursor:pointer; font-family:'DM Sans',sans-serif; }
+.doc-upload-btn:hover { border-color:#6b9fff; color:#6b9fff; }
+.doc-upload-btn input { display:none; }
+
+/* ── ITR PREVIEW ROWS ── */
+.preview-row { display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #21262d; font-size:12px; }
+.preview-row:last-child { border:none; }
+.preview-row span:first-child { color:#484f58; }
+.preview-row span:last-child { color:#e6edf3; font-weight:500; text-align:right; max-width:55%; word-break:break-all; }
+
 /* ── UTILS ── */
 .divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
 .mt16 { margin-top: 16px; }
@@ -588,131 +606,262 @@ footer a { color: #6b9fff; text-decoration: none; }
     <div class="section-title">File My ITR — ₹50 Flat</div>
     <div class="section-sub">We file your ITR on the income tax portal within 24 hours. No office visit needed.</div>
     <div class="intake-card">
+
       <!-- Step tabs -->
       <div class="intake-steps">
-        <div class="istep active" id="tab1">1. Your details</div>
-        <div class="istep" id="tab2">2. Income & deductions</div>
-        <div class="istep" id="tab3">3. Payment — ₹50</div>
-        <div class="istep" id="tab4">4. Portal access</div>
-        <div class="istep" id="tab5">5. Done!</div>
+        <div class="istep active" id="tab1">1. Details + Portal</div>
+        <div class="istep" id="tab2">2. Income</div>
+        <div class="istep" id="tab3">3. Pay ₹50</div>
+        <div class="istep" id="tab4">4. Documents</div>
+        <div class="istep" id="tab5">5. Review ITR</div>
+        <div class="istep" id="tab6">6. Done!</div>
       </div>
 
-      <!-- Panel 1: Basic details -->
+      <!-- ── PANEL 1: Basic details + Portal credentials + 26AS upload ── -->
       <div class="intake-panel active" id="panel1">
+        <div style="font-size:12px;font-weight:600;color:#6b9fff;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em">Personal details</div>
         <div class="two-col">
-          <div class="ifg"><label>Full name (as on PAN)</label><input type="text" id="f-name" placeholder="e.g. Shubham Udayraj Kapure"></div>
-          <div class="ifg"><label>PAN number</label><input type="text" id="f-pan" placeholder="ABCDE1234F" maxlength="10" style="text-transform:uppercase"></div>
+          <div class="ifg"><label>Full name (as on PAN)</label><input type="text" id="f-name" placeholder="e.g. Shubham Udayraj Kapure" oninput="syncField('f-name')"></div>
+          <div class="ifg"><label>PAN number</label><input type="text" id="f-pan" placeholder="ABCDE1234F" maxlength="10" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase();syncField('f-pan')"></div>
         </div>
         <div class="two-col">
-          <div class="ifg"><label>Date of birth</label><input type="date" id="f-dob"></div>
-          <div class="ifg"><label>Mobile number</label><input type="tel" id="f-mobile" placeholder="10-digit mobile"></div>
+          <div class="ifg"><label>Date of birth</label><input type="date" id="f-dob" oninput="syncField('f-dob')"></div>
+          <div class="ifg"><label>Mobile number</label><input type="tel" id="f-mobile" placeholder="10-digit mobile" oninput="syncField('f-mobile')"></div>
         </div>
-        <div class="ifg"><label>Email address</label><input type="email" id="f-email" placeholder="your@email.com"></div>
         <div class="two-col">
-          <div class="ifg"><label>City / State</label><input type="text" id="f-city" placeholder="e.g. Pune, Maharashtra"></div>
-          <div class="ifg"><label>Recommended ITR form</label>
-            <select id="f-itr">
-              <option value="">-- Select --</option>
-              <option value="ITR-1">ITR-1 (Sahaj) — Salaried, income ≤ ₹50L</option>
-              <option value="ITR-2">ITR-2 — Capital gains / income > ₹50L</option>
-              <option value="ITR-3">ITR-3 — Business / freelance</option>
-              <option value="ITR-4">ITR-4 (Sugam) — Presumptive tax</option>
-            </select>
+          <div class="ifg"><label>Email address</label><input type="email" id="f-email" placeholder="your@email.com" oninput="syncField('f-email')"></div>
+          <div class="ifg"><label>City / State</label><input type="text" id="f-city" placeholder="e.g. Pune, Maharashtra" oninput="syncField('f-city')"></div>
+        </div>
+        <div class="ifg">
+          <label>ITR form (auto-filled from recommender or select)</label>
+          <select id="f-itr">
+            <option value="">-- Select --</option>
+            <option value="ITR-1">ITR-1 (Sahaj) — Salaried, income up to 50L</option>
+            <option value="ITR-2">ITR-2 — Capital gains / income above 50L</option>
+            <option value="ITR-3">ITR-3 — Business / freelance</option>
+            <option value="ITR-4">ITR-4 (Sugam) — Presumptive tax</option>
+          </select>
+        </div>
+
+        <div style="border-top:1px solid #30363d;margin:18px 0 14px;padding-top:14px">
+          <div style="font-size:12px;font-weight:600;color:#6b9fff;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em">IT Portal credentials</div>
+          <div class="warning-box" style="margin-bottom:14px">
+            🔐 Your credentials are used only to file your ITR. Password is stored securely in our private Sheet — only you and we can see it. Change your password after filing is complete.
+          </div>
+          <div class="two-col">
+            <div class="ifg">
+              <label>Portal User ID (PAN)</label>
+              <input type="text" id="f-uid" placeholder="Your PAN — same as above" style="font-family:'DM Mono',monospace;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+            </div>
+            <div class="ifg">
+              <label>Portal Password — <span style="color:#3fb950;font-weight:600">visible for your verification</span></label>
+              <div style="position:relative">
+                <input type="text" id="f-pwd" placeholder="Your incometax.gov.in password" style="width:100%;padding-right:60px">
+                <button onclick="togglePwd('f-pwd','eye1')" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#21262d;border:none;border-radius:4px;cursor:pointer;color:#8b9ab0;font-size:11px;padding:3px 7px" id="eye1">Hide</button>
+              </div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="ifg">
+              <label>Confirm password</label>
+              <div style="position:relative">
+                <input type="text" id="f-pwd2" placeholder="Re-enter to confirm" style="width:100%;padding-right:60px">
+                <button onclick="togglePwd('f-pwd2','eye2')" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#21262d;border:none;border-radius:4px;cursor:pointer;color:#8b9ab0;font-size:11px;padding:3px 7px" id="eye2">Hide</button>
+              </div>
+            </div>
+            <div class="ifg" style="display:flex;align-items:flex-end">
+              <div id="pwd-match-status" style="width:100%;padding:10px 12px;border-radius:8px;font-size:12px;background:#21262d;color:#484f58">
+                Enter password in both fields to verify match
+              </div>
+            </div>
           </div>
         </div>
+
+        <div style="border-top:1px solid #30363d;margin:18px 0 14px;padding-top:14px">
+          <div style="font-size:12px;font-weight:600;color:#6b9fff;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">Upload Form 26AS — auto-fills your income data</div>
+          <div style="background:#0d1117;border:1.5px dashed #30363d;border-radius:10px;padding:20px;text-align:center;cursor:pointer" onclick="document.getElementById('f-26as').click()" id="upload-zone">
+            <div style="font-size:22px;margin-bottom:6px">📄</div>
+            <div style="font-size:13px;color:#e6edf3;font-weight:500">Click to upload Form 26AS PDF</div>
+            <div style="font-size:11px;color:#484f58;margin-top:4px">We will auto-extract your salary, TDS, and employer details</div>
+            <input type="file" id="f-26as" accept=".pdf,.html,.txt" style="display:none" onchange="parse26AS(this)">
+          </div>
+          <div id="parse-status" style="display:none;margin-top:10px;background:#1a2d1a;border:1px solid #3fb950;border-radius:8px;padding:12px;font-size:12px;color:#56d364;line-height:1.7"></div>
+        </div>
+
         <button class="next-btn" onclick="goPanel(2)">Next: Income details →</button>
       </div>
 
-      <!-- Panel 2: Income -->
+      <!-- ── PANEL 2: Income & deductions ── -->
       <div class="intake-panel" id="panel2">
+        <div style="font-size:12px;font-weight:600;color:#6b9fff;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em">Income details</div>
+        <div style="font-size:11px;color:#484f58;margin-bottom:14px">Fields marked ✓ were auto-filled from your Form 26AS</div>
         <div class="two-col">
-          <div class="ifg"><label>Gross annual salary (₹)</label><input type="number" id="f-sal" placeholder="e.g. 800000"></div>
-          <div class="ifg"><label>Other income (₹)</label><input type="number" id="f-oth" placeholder="0" value="0"></div>
+          <div class="ifg"><label>Gross annual salary (₹)</label><input type="number" id="f-sal" placeholder="e.g. 800000" oninput="syncField('f-sal')"></div>
+          <div class="ifg"><label>Employer name</label><input type="text" id="f-employer" placeholder="Auto-filled from Form 26AS" oninput="syncField('f-employer')"></div>
         </div>
         <div class="two-col">
-          <div class="ifg"><label>Sec 80C investments (₹)</label><input type="number" id="f-80c" placeholder="0" value="0"></div>
-          <div class="ifg"><label>Sec 80D health insurance (₹)</label><input type="number" id="f-80d" placeholder="0" value="0"></div>
+          <div class="ifg"><label>TDS deducted (Form 26AS)</label><input type="number" id="f-tds" placeholder="0" value="0" oninput="syncField('f-tds')"></div>
+          <div class="ifg"><label>Other income — interest, rent (₹)</label><input type="number" id="f-oth" placeholder="0" value="0" oninput="syncField('f-oth')"></div>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:#6b9fff;margin:16px 0 10px;text-transform:uppercase;letter-spacing:0.06em">Deductions (old regime)</div>
+        <div class="two-col">
+          <div class="ifg"><label>Sec 80C investments (max 1,50,000)</label><input type="number" id="f-80c" placeholder="0" value="0" oninput="syncField('f-80c')"></div>
+          <div class="ifg"><label>Sec 80D health insurance (₹)</label><input type="number" id="f-80d" placeholder="0" value="0" oninput="syncField('f-80d')"></div>
         </div>
         <div class="two-col">
-          <div class="ifg"><label>HRA exemption (₹)</label><input type="number" id="f-hra" placeholder="0" value="0"></div>
-          <div class="ifg"><label>Home loan interest (₹)</label><input type="number" id="f-hl" placeholder="0" value="0"></div>
+          <div class="ifg"><label>HRA exemption (₹)</label><input type="number" id="f-hra" placeholder="0" value="0" oninput="syncField('f-hra')"></div>
+          <div class="ifg"><label>Home loan interest 24(b)</label><input type="number" id="f-hl" placeholder="0" value="0" oninput="syncField('f-hl')"></div>
         </div>
         <div class="two-col">
-          <div class="ifg"><label>TDS deducted (from Form 26AS)</label><input type="number" id="f-tds" placeholder="0" value="0"></div>
+          <div class="ifg"><label>NPS 80CCD(1B) — extra 50,000</label><input type="number" id="f-nps" placeholder="0" value="0" oninput="syncField('f-nps')"></div>
           <div class="ifg"><label>Preferred regime</label>
-            <select id="f-regime">
+            <select id="f-regime" oninput="syncField('f-regime')">
               <option value="recommend">Recommend for me</option>
               <option value="old">Old Regime</option>
               <option value="new">New Regime</option>
             </select>
           </div>
         </div>
-        <div class="ifg"><label>Additional notes (optional)</label><input type="text" id="f-notes" placeholder="e.g. have rental income, NPS contribution, etc."></div>
+        <div class="ifg"><label>Additional notes (optional)</label><input type="text" id="f-notes" placeholder="e.g. have rental income, NPS, crypto gains..." oninput="syncField('f-notes')"></div>
         <button class="next-btn" onclick="goPanel(3)">Next: Payment →</button>
       </div>
 
-      <!-- Panel 3: Payment -->
+      <!-- ── PANEL 3: Payment ── -->
       <div class="intake-panel" id="panel3">
         <div class="qr-box">
-          <div style="font-size:14px;color:#8b9ab0;margin-bottom:8px">Scan & pay ₹50 via any UPI app</div>
+          <div style="font-size:14px;color:#8b9ab0;margin-bottom:8px">Scan and pay ₹50 via any UPI app</div>
           <div class="popup-price">₹50 <span>₹500</span></div>
-          <div style="font-size:12px;color:#8b9ab0;margin-bottom:12px">One-time flat fee. No hidden charges.</div>
+          <div style="font-size:12px;color:#8b9ab0;margin-bottom:12px">One-time flat fee. No hidden charges ever.</div>
           <img id="upi-qr" src="" alt="UPI QR Code">
-          <div class="upi-id-display" id="upi-display">Loading UPI ID...</div>
+          <div class="upi-id-display" id="upi-display">Loading...</div>
           <div style="font-size:11px;color:#8b9ab0;margin-top:6px">Works with GPay, PhonePe, Paytm, any UPI app</div>
         </div>
         <div class="utr-input-wrap">
           <div class="ifg"><label>Enter UTR / Transaction ID after payment</label><input type="text" id="f-utr" placeholder="e.g. 426789123456 (12-digit UTR)"></div>
-          <button class="next-btn" onclick="verifyPayment()">Confirm Payment & Continue →</button>
+          <button class="next-btn" onclick="verifyPayment()">Confirm Payment &amp; Continue →</button>
         </div>
       </div>
 
-      <!-- Panel 4: Credentials -->
+      <!-- ── PANEL 4: Document uploads ── -->
       <div class="intake-panel" id="panel4">
-        <div class="warning-box">
-          ⚠️ <strong>Security note:</strong> Your credentials are used only to file your ITR on incometax.gov.in. We do not store your password in any database. It is used once and immediately discarded after filing. We recommend changing your password after we complete filing.
-        </div>
-        <div class="two-col">
-          <div class="ifg">
-            <label>IT Portal User ID (PAN)</label>
-            <input type="text" id="f-uid" placeholder="Your PAN number" style="font-family:'DM Mono',monospace;text-transform:uppercase">
+        <div style="font-size:12px;font-weight:600;color:#6b9fff;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em">Upload your documents</div>
+        <div style="font-size:11px;color:#8b9ab0;margin-bottom:16px">Upload whatever you have. Minimum: Form 16 or Form 26AS. Everything else is optional.</div>
+        <div id="doc-upload-list">
+          <div class="doc-row" id="doc-form16">
+            <div class="doc-info"><span class="doc-name">Form 16 (Part A &amp; B)</span><span class="doc-req">Required</span></div>
+            <div class="doc-status" id="ds-form16">Not uploaded</div>
+            <label class="doc-upload-btn">Upload <input type="file" accept=".pdf,.jpg,.png" onchange="markUploaded('form16',this)"></label>
           </div>
-          <div class="ifg">
-            <label>IT Portal Password</label>
-            <div style="position:relative">
-              <input type="text" id="f-pwd" placeholder="Your incometax.gov.in password" style="width:100%;padding-right:44px">
-              <button onclick="togglePwd('f-pwd','eye1')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#8b9ab0;font-size:12px;padding:0;white-space:nowrap" id="eye1">🙈 Hide</button>
-            </div>
+          <div class="doc-row" id="doc-26as">
+            <div class="doc-info"><span class="doc-name">Form 26AS / Annual Tax Statement</span><span class="doc-req">Required</span></div>
+            <div class="doc-status" id="ds-26as">Not uploaded</div>
+            <label class="doc-upload-btn">Upload <input type="file" accept=".pdf,.html" onchange="markUploaded('26as',this)"></label>
+          </div>
+          <div class="doc-row" id="doc-ais">
+            <div class="doc-info"><span class="doc-name">AIS / TIS (Annual Information Statement)</span><span class="doc-req">Recommended</span></div>
+            <div class="doc-status" id="ds-ais">Not uploaded</div>
+            <label class="doc-upload-btn">Upload <input type="file" accept=".pdf" onchange="markUploaded('ais',this)"></label>
+          </div>
+          <div class="doc-row">
+            <div class="doc-info"><span class="doc-name">80C Investment proofs (PPF, LIC, ELSS)</span><span class="doc-req">If applicable</span></div>
+            <div class="doc-status" id="ds-80c">Not uploaded</div>
+            <label class="doc-upload-btn">Upload <input type="file" accept=".pdf,.jpg,.png" multiple onchange="markUploaded('80c',this)"></label>
+          </div>
+          <div class="doc-row">
+            <div class="doc-info"><span class="doc-name">Health insurance receipts (80D)</span><span class="doc-req">If applicable</span></div>
+            <div class="doc-status" id="ds-hins">Not uploaded</div>
+            <label class="doc-upload-btn">Upload <input type="file" accept=".pdf,.jpg,.png" multiple onchange="markUploaded('hins',this)"></label>
+          </div>
+          <div class="doc-row">
+            <div class="doc-info"><span class="doc-name">Home loan interest certificate</span><span class="doc-req">If applicable</span></div>
+            <div class="doc-status" id="ds-hl">Not uploaded</div>
+            <label class="doc-upload-btn">Upload <input type="file" accept=".pdf" onchange="markUploaded('hl',this)"></label>
+          </div>
+          <div class="doc-row">
+            <div class="doc-info"><span class="doc-name">Rent receipts / Rental agreement (HRA)</span><span class="doc-req">If applicable</span></div>
+            <div class="doc-status" id="ds-rent">Not uploaded</div>
+            <label class="doc-upload-btn">Upload <input type="file" accept=".pdf,.jpg,.png" multiple onchange="markUploaded('rent',this)"></label>
           </div>
         </div>
-        <div class="ifg">
-          <label>Confirm password</label>
-          <div style="position:relative">
-            <input type="text" id="f-pwd2" placeholder="Re-enter password" style="width:100%;padding-right:54px">
-            <button onclick="togglePwd('f-pwd2','eye2')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#8b9ab0;font-size:12px;padding:0;white-space:nowrap" id="eye2">🙈 Hide</button>
-          </div>
+        <div style="margin-top:14px;background:#1a2310;border:1px solid #2d4a1a;border-radius:8px;padding:10px 14px;font-size:11px;color:#56d364;line-height:1.6">
+          📁 All documents are stored in your private folder in our Google Drive. Only you and our team can access them. Link will be emailed to you.
         </div>
-        <div style="background:#162032;border:1px solid #1a3fcb55;border-radius:8px;padding:10px 14px;font-size:11px;color:#6b9fff;margin-bottom:12px;line-height:1.6">
-          🔐 Password is shown so you can verify it is correct before submitting. Your data is transmitted securely.
-        </div>
-        <button class="next-btn" onclick="submitAll()">Submit & File My ITR →</button>
+        <button class="next-btn" style="margin-top:14px" onclick="buildPreview()">Review My ITR Before Submitting →</button>
       </div>
 
-      <!-- Panel 5: Success -->
+      <!-- ── PANEL 5: ITR Preview / Confirmation ── -->
       <div class="intake-panel" id="panel5">
+        <div style="font-size:12px;font-weight:600;color:#6b9fff;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em">Review your ITR — verify everything before submitting</div>
+        <div style="font-size:11px;color:#8b9ab0;margin-bottom:16px">This is the data we will use to file your ITR. Please check carefully.</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div style="background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:14px">
+            <div style="font-size:11px;font-weight:600;color:#6b9fff;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">Personal info</div>
+            <div class="preview-row"><span>Name</span><span id="pr-name">—</span></div>
+            <div class="preview-row"><span>PAN</span><span id="pr-pan">—</span></div>
+            <div class="preview-row"><span>Date of birth</span><span id="pr-dob">—</span></div>
+            <div class="preview-row"><span>Mobile</span><span id="pr-mobile">—</span></div>
+            <div class="preview-row"><span>Email</span><span id="pr-email">—</span></div>
+            <div class="preview-row"><span>City</span><span id="pr-city">—</span></div>
+            <div class="preview-row"><span>ITR form</span><span id="pr-itr">—</span></div>
+          </div>
+          <div style="background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:14px">
+            <div style="font-size:11px;font-weight:600;color:#6b9fff;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">Income &amp; tax</div>
+            <div class="preview-row"><span>Employer</span><span id="pr-employer">—</span></div>
+            <div class="preview-row"><span>Gross salary</span><span id="pr-sal">—</span></div>
+            <div class="preview-row"><span>Other income</span><span id="pr-oth">—</span></div>
+            <div class="preview-row"><span>TDS deducted</span><span id="pr-tds">—</span></div>
+            <div class="preview-row"><span>80C investments</span><span id="pr-80c">—</span></div>
+            <div class="preview-row"><span>80D health ins.</span><span id="pr-80d">—</span></div>
+            <div class="preview-row"><span>HRA exemption</span><span id="pr-hra">—</span></div>
+            <div class="preview-row"><span>Home loan int.</span><span id="pr-hl">—</span></div>
+            <div class="preview-row"><span>Preferred regime</span><span id="pr-regime">—</span></div>
+          </div>
+        </div>
+
+        <div style="background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:14px;margin-bottom:14px">
+          <div style="font-size:11px;font-weight:600;color:#6b9fff;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">Portal access</div>
+          <div class="preview-row"><span>Portal User ID</span><span id="pr-uid" style="font-family:'DM Mono',monospace">—</span></div>
+          <div class="preview-row"><span>Password</span><span id="pr-pwd" style="font-family:'DM Mono',monospace;color:#3fb950">—</span></div>
+          <div class="preview-row"><span>Payment UTR</span><span id="pr-utr">—</span></div>
+        </div>
+
+        <div id="tax-estimate-box" style="background:#0d2d18;border:1px solid #3fb950;border-radius:10px;padding:14px;margin-bottom:14px">
+          <div style="font-size:11px;font-weight:600;color:#3fb950;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">Auto-calculated tax estimate</div>
+          <div class="preview-row"><span>Recommended regime</span><span id="pr-rec-regime" style="color:#3fb950;font-weight:600">—</span></div>
+          <div class="preview-row"><span>Estimated tax payable</span><span id="pr-est-tax">—</span></div>
+          <div class="preview-row"><span>TDS already paid</span><span id="pr-est-tds">—</span></div>
+          <div class="preview-row" style="font-weight:600;font-size:14px"><span>Balance due / Refund</span><span id="pr-est-balance">—</span></div>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button onclick="goPanel(4)" style="padding:11px 20px;border:1px solid #30363d;border-radius:8px;background:transparent;color:#8b9ab0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px">← Edit details</button>
+          <button class="next-btn" style="flex:1" onclick="submitAll()">Confirm &amp; Submit My ITR Request →</button>
+        </div>
+        <div style="font-size:11px;color:#484f58;margin-top:10px;text-align:center">By submitting you confirm all information above is correct. We will file your ITR and email you the acknowledgement.</div>
+      </div>
+
+      <!-- ── PANEL 6: Success ── -->
+      <div class="intake-panel" id="panel6">
         <div class="success-box">
           <div class="success-icon">✓</div>
-          <h3>Request Received!</h3>
-          <p>Thank you <strong id="success-name"></strong>! Your ITR filing request has been submitted successfully.</p>
+          <h3>Request Submitted!</h3>
+          <p>Thank you <strong id="success-name"></strong>! Your ITR filing request has been received and confirmed.</p>
           <div class="client-id-badge" id="success-id"></div>
-          <p style="margin-top:12px">We will file your ITR within <strong style="color:#3fb950">24 hours</strong> and send the acknowledgement PDF to your email.</p>
-          <p style="margin-top:8px;font-size:12px;color:#484f58">Save your unique client ID above for future reference.</p>
-          <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-            <a href="#calculator" class="btn-primary" style="font-size:13px;padding:9px 20px">Calculate tax savings</a>
-            <a href="#itr-types" class="btn-outline" style="font-size:13px;padding:9px 20px;background:transparent;border:1px solid #30363d;color:#e6edf3">Learn about ITR types</a>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;text-align:left">
+            <div style="background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:12px">
+              <div style="font-size:10px;color:#484f58;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">What happens next</div>
+              <div style="font-size:12px;color:#8b9ab0;line-height:1.7">1. We review your details<br>2. Login to IT portal<br>3. File your ITR within 24hr<br>4. Email you acknowledgement PDF</div>
+            </div>
+            <div style="background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:12px">
+              <div style="font-size:10px;color:#484f58;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Important reminders</div>
+              <div style="font-size:12px;color:#8b9ab0;line-height:1.7">• Change your portal password after filing<br>• Save your client ID above<br>• Check email for acknowledgement<br>• Verify on incometax.gov.in</div>
+            </div>
           </div>
+          <p style="font-size:12px;color:#484f58">Your documents are saved in our secure Drive. You'll receive a link by email.</p>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -746,14 +895,433 @@ const UPI_ID = 'priyushimpi21@okicici';
 const UPI_NAME = 'FileMy ITR';
 const AMOUNT = 50;
 
-/* QR CODE */
+/* ── QR CODE ── */
 function makeQR() {
-  const upiLink = 'upi://pay?pa=' + UPI_ID + '&pn=' + encodeURIComponent(UPI_NAME) + '&am=' + AMOUNT + '&cu=INR&tn=ITR+Filing+Fee';
-  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(upiLink);
+  var upiLink = 'upi://pay?pa=' + UPI_ID + '&pn=' + encodeURIComponent(UPI_NAME) + '&am=' + AMOUNT + '&cu=INR&tn=ITR+Filing+Fee';
+  var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(upiLink);
   document.getElementById('upi-qr').src = qrUrl;
   document.getElementById('upi-display').textContent = UPI_ID;
 }
 makeQR();
+
+/* ── 1-MINUTE POPUP ── */
+var popupShown = false;
+setTimeout(function() {
+  if (!popupShown) { document.getElementById('popup').classList.add('show'); popupShown = true; }
+}, 60000);
+function closePopup() { document.getElementById('popup').classList.remove('show'); }
+function closePopupAndScroll() { closePopup(); document.getElementById('file-itr').scrollIntoView({ behavior: 'smooth' }); }
+
+/* ── TOAST ── */
+function showToast(msg, isError) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isError ? '#8b1a1a' : '#0d1117';
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3500);
+}
+
+/* ── SHOW/HIDE PASSWORD ── */
+function togglePwd(inputId, btnId) {
+  var input = document.getElementById(inputId);
+  var btn = document.getElementById(btnId);
+  if (input.type === 'text') { input.type = 'password'; btn.textContent = 'Show'; }
+  else { input.type = 'text'; btn.textContent = 'Hide'; }
+}
+
+/* ── PASSWORD LIVE MATCH CHECK ── */
+function checkPwdMatch() {
+  var p1 = document.getElementById('f-pwd').value;
+  var p2 = document.getElementById('f-pwd2').value;
+  var box = document.getElementById('pwd-match-status');
+  if (!p1 && !p2) { box.textContent = 'Enter password in both fields to verify match'; box.style.color = '#484f58'; box.style.background = '#21262d'; box.style.border = '1px solid #30363d'; return; }
+  if (p2.length === 0) { box.textContent = 'Re-enter in confirm field to verify'; box.style.color = '#8b9ab0'; box.style.background = '#21262d'; box.style.border = '1px solid #30363d'; return; }
+  if (p1 === p2) { box.textContent = 'Passwords match'; box.style.color = '#3fb950'; box.style.background = '#0d2d18'; box.style.border = '1px solid #3fb950'; }
+  else { box.textContent = 'Passwords do not match'; box.style.color = '#e24b4a'; box.style.background = '#2d0d0d'; box.style.border = '1px solid #e24b4a'; }
+}
+window.addEventListener('load', function() {
+  document.getElementById('f-pwd').addEventListener('input', checkPwdMatch);
+  document.getElementById('f-pwd2').addEventListener('input', checkPwdMatch);
+});
+
+/* ── SYNC FIELD TO PREVIEW ── */
+var previewMap = {
+  'f-name':'pr-name','f-pan':'pr-pan','f-dob':'pr-dob','f-mobile':'pr-mobile',
+  'f-email':'pr-email','f-city':'pr-city','f-itr':'pr-itr','f-sal':'pr-sal',
+  'f-tds':'pr-tds','f-oth':'pr-oth','f-80c':'pr-80c','f-80d':'pr-80d',
+  'f-hra':'pr-hra','f-hl':'pr-hl','f-regime':'pr-regime','f-employer':'pr-employer'
+};
+function syncField(id) {
+  var el = document.getElementById(id);
+  var target = previewMap[id];
+  if (!el || !target || !document.getElementById(target)) return;
+  var val = el.value || '—';
+  if (id === 'f-sal' || id === 'f-tds' || id === 'f-oth' || id === 'f-80c' || id === 'f-80d' || id === 'f-hra' || id === 'f-hl') {
+    val = val && val !== '—' ? '\u20B9' + parseFloat(val).toLocaleString('en-IN') : '0';
+  }
+  document.getElementById(target).textContent = val;
+}
+
+/* ── PANEL NAVIGATION (now 6 panels) ── */
+function goPanel(n) {
+  if (n === 2) {
+    var name = document.getElementById('f-name').value.trim();
+    var pan  = document.getElementById('f-pan').value.trim();
+    var email = document.getElementById('f-email').value.trim();
+    var mobile = document.getElementById('f-mobile').value.trim();
+    var pwd = document.getElementById('f-pwd').value;
+    var pwd2 = document.getElementById('f-pwd2').value;
+    if (!name || !pan || !email || !mobile) { showToast('Please fill Name, PAN, Email and Mobile', true); return; }
+    if (pan.length !== 10) { showToast('PAN must be exactly 10 characters', true); return; }
+    if (!pwd) { showToast('Please enter your portal password', true); return; }
+    if (pwd !== pwd2) { showToast('Passwords do not match — please re-enter', true); return; }
+  }
+  document.querySelectorAll('.intake-panel').forEach(function(p, i) {
+    p.classList.toggle('active', i === n - 1);
+  });
+  document.querySelectorAll('.istep').forEach(function(t, i) {
+    t.classList.remove('active', 'done');
+    if (i < n - 1) t.classList.add('done');
+    if (i === n - 1) t.classList.add('active');
+  });
+  document.getElementById('file-itr').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── VERIFY PAYMENT ── */
+function verifyPayment() {
+  var utr = document.getElementById('f-utr').value.trim();
+  if (!utr || utr.length < 6) { showToast('Please enter a valid UTR / Transaction ID', true); return; }
+  showToast('Payment confirmed! Proceeding to documents...');
+  setTimeout(function() { goPanel(4); }, 800);
+}
+
+/* ── DOCUMENT UPLOAD STATUS ── */
+function markUploaded(docId, input) {
+  if (!input.files || !input.files[0]) return;
+  var statusEl = document.getElementById('ds-' + docId);
+  if (statusEl) { statusEl.textContent = input.files[0].name.substring(0,24) + ' (ready)'; statusEl.classList.add('uploaded'); }
+  showToast('Document ready: ' + input.files[0].name.substring(0,30));
+}
+
+/* ── PARSE FORM 26AS (text/HTML extraction) ── */
+function parse26AS(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var zone = document.getElementById('upload-zone');
+  zone.innerHTML = '<div style="font-size:13px;color:#3fb950">Reading ' + file.name + '...</div>';
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var text = e.target.result;
+    var found = {};
+
+    /* Extract salary / TDS from common Form 26AS patterns */
+    var salaryMatch = text.match(/(?:Total Amount Paid[^0-9]*|1,0|Amount Paid.*?Credited[^0-9]*)([\d,]+\.?\d*)/i);
+    if (salaryMatch) { found.salary = salaryMatch[1].replace(/,/g,''); }
+
+    var tdsMatch = text.match(/(?:Total Tax Deducted|TDS Deposited|Tax Deducted)[^\d]*([\d,]+\.?\d*)/i);
+    if (tdsMatch) { found.tds = tdsMatch[1].replace(/,/g,''); }
+
+    var nameMatch = text.match(/Name of Assessee[^A-Z]*([A-Z][A-Z\s]+)/i);
+    if (nameMatch) { found.name = nameMatch[1].trim(); }
+
+    var panMatch = text.match(/([A-Z]{5}[0-9]{4}[A-Z]{1})/);
+    if (panMatch) { found.pan = panMatch[1]; }
+
+    var employerMatch = text.match(/(?:Name of Deductor)[^\n]*\n?\s*([A-Z][A-Z\s&]+(?:LTD|LIMITED|PVT|PRIVATE|INC|CORP|TECHNOLOGIES|SERVICES|SOLUTIONS)?)/i);
+    if (employerMatch) { found.employer = employerMatch[1].trim().replace(/\s+/g,' '); }
+
+    /* Auto-fill fields */
+    var filled = [];
+    if (found.salary && document.getElementById('f-sal')) {
+      document.getElementById('f-sal').value = found.salary;
+      syncField('f-sal'); filled.push('Salary: \u20B9' + parseFloat(found.salary).toLocaleString('en-IN'));
+    }
+    if (found.tds && document.getElementById('f-tds')) {
+      document.getElementById('f-tds').value = found.tds;
+      syncField('f-tds'); filled.push('TDS: \u20B9' + parseFloat(found.tds).toLocaleString('en-IN'));
+    }
+    if (found.name && !document.getElementById('f-name').value) {
+      document.getElementById('f-name').value = found.name;
+      syncField('f-name'); filled.push('Name: ' + found.name);
+    }
+    if (found.pan && !document.getElementById('f-pan').value) {
+      document.getElementById('f-pan').value = found.pan;
+      syncField('f-pan'); filled.push('PAN: ' + found.pan);
+    }
+    if (found.employer && document.getElementById('f-employer')) {
+      document.getElementById('f-employer').value = found.employer;
+      syncField('f-employer'); filled.push('Employer: ' + found.employer.substring(0,30));
+    }
+
+    var statusEl = document.getElementById('parse-status');
+    statusEl.style.display = 'block';
+    if (filled.length > 0) {
+      statusEl.innerHTML = '<strong style="color:#3fb950">Auto-filled from Form 26AS:</strong><br>' + filled.join('<br>');
+    } else {
+      statusEl.style.background = '#2d1b00'; statusEl.style.borderColor = '#d29922'; statusEl.style.color = '#d29922';
+      statusEl.innerHTML = '<strong>Could not auto-extract data</strong> — please fill income fields manually in Step 2. (Works best with text-based PDFs, not scanned images.)';
+    }
+    zone.innerHTML = '<div style="font-size:13px;color:#3fb950;font-weight:500">Form 26AS uploaded: ' + file.name + '</div><div style="font-size:11px;color:#484f58;margin-top:4px">Click to replace</div>';
+    zone.onclick = function() { document.getElementById('f-26as').click(); };
+
+    /* Also mark doc as uploaded in panel 4 */
+    var ds26 = document.getElementById('ds-26as');
+    if (ds26) { ds26.textContent = file.name.substring(0,24) + ' (ready)'; ds26.classList.add('uploaded'); }
+  };
+  reader.readAsText(file);
+}
+
+/* ── BUILD PREVIEW (populate Panel 5 before showing) ── */
+function buildPreview() {
+  /* Populate all preview fields */
+  var fields = ['f-name','f-pan','f-dob','f-mobile','f-email','f-city','f-itr',
+                'f-sal','f-tds','f-oth','f-80c','f-80d','f-hra','f-hl','f-regime','f-employer'];
+  fields.forEach(function(id) { syncField(id); });
+
+  /* Show portal creds in preview */
+  var uid = document.getElementById('f-uid').value || '—';
+  var pwd = document.getElementById('f-pwd').value || '—';
+  var utr = document.getElementById('f-utr').value || '—';
+  document.getElementById('pr-uid').textContent = uid;
+  document.getElementById('pr-pwd').textContent = pwd;
+  document.getElementById('pr-utr').textContent = utr;
+
+  /* Auto-calculate tax estimate */
+  var sal  = parseFloat(document.getElementById('f-sal').value) || 0;
+  var oth  = parseFloat(document.getElementById('f-oth').value) || 0;
+  var c80  = Math.min(parseFloat(document.getElementById('f-80c').value) || 0, 150000);
+  var c80d = Math.min(parseFloat(document.getElementById('f-80d').value) || 0, 75000);
+  var hra  = parseFloat(document.getElementById('f-hra').value) || 0;
+  var hl   = Math.min(parseFloat(document.getElementById('f-hl').value) || 0, 200000);
+  var nps  = Math.min(parseFloat(document.getElementById('f-nps').value) || 0, 50000);
+  var tds  = parseFloat(document.getElementById('f-tds').value) || 0;
+  var gross = sal + oth;
+
+  /* Old regime */
+  var oldDed = 50000 + c80 + c80d + hra + hl + nps;
+  var oldInc = Math.max(0, gross - oldDed);
+  var oR = calcOldTax(oldInc);
+
+  /* New regime */
+  var newInc = Math.max(0, gross - 75000);
+  var nR = calcNewTax(newInc);
+
+  var better = oR <= nR ? 'Old Regime' : 'New Regime';
+  var bestTax = Math.min(oR, nR);
+  var balance = bestTax - tds;
+
+  document.getElementById('pr-rec-regime').textContent = better;
+  document.getElementById('pr-est-tax').textContent = '\u20B9' + Math.round(bestTax).toLocaleString('en-IN');
+  document.getElementById('pr-est-tds').textContent = '\u20B9' + Math.round(tds).toLocaleString('en-IN');
+  var balEl = document.getElementById('pr-est-balance');
+  if (balance > 0) {
+    balEl.textContent = '\u20B9' + Math.round(balance).toLocaleString('en-IN') + ' due';
+    balEl.style.color = '#e24b4a';
+  } else if (balance < 0) {
+    balEl.textContent = '\u20B9' + Math.round(Math.abs(balance)).toLocaleString('en-IN') + ' refund';
+    balEl.style.color = '#3fb950';
+  } else {
+    balEl.textContent = 'Fully settled';
+    balEl.style.color = '#3fb950';
+  }
+
+  goPanel(5);
+}
+
+/* ── TAX CALCULATION HELPERS ── */
+function calcOldTax(inc) {
+  var t = 0;
+  if (inc > 1000000) t = 112500 + (inc - 1000000) * 0.30;
+  else if (inc > 500000) t = 12500 + (inc - 500000) * 0.20;
+  else if (inc > 250000) t = (inc - 250000) * 0.05;
+  var reb = inc <= 500000 ? Math.min(t, 12500) : 0;
+  t -= reb;
+  return Math.round(t + t * 0.04);
+}
+function calcNewTax(inc) {
+  var slabs = [[400000,0],[400000,0.05],[400000,0.10],[400000,0.15],[400000,0.20],[400000,0.25],[Infinity,0.30]];
+  var t = 0, rem = inc;
+  slabs.forEach(function(s) { if (rem <= 0) return; t += Math.min(rem, s[0]) * s[1]; rem -= s[0]; });
+  var reb = inc <= 1200000 ? Math.min(t, 60000) : 0;
+  t -= reb;
+  return Math.round(t + t * 0.04);
+}
+
+/* ── SUBMIT ALL ── */
+function submitAll() {
+  var pwd  = document.getElementById('f-pwd').value;
+  var pwd2 = document.getElementById('f-pwd2').value;
+  if (!pwd || pwd !== pwd2) { showToast('Passwords do not match', true); return; }
+
+  var pan = document.getElementById('f-pan').value.toUpperCase();
+  var name = document.getElementById('f-name').value;
+  var clientId = pan + '_' + Date.now().toString().slice(-4);
+
+  var payload = {
+    clientId: clientId,
+    name: name,
+    pan: pan,
+    dob: document.getElementById('f-dob').value,
+    mobile: document.getElementById('f-mobile').value,
+    email: document.getElementById('f-email').value,
+    city: document.getElementById('f-city').value,
+    itrForm: document.getElementById('f-itr').value,
+    employer: document.getElementById('f-employer').value,
+    salary: document.getElementById('f-sal').value,
+    otherIncome: document.getElementById('f-oth').value,
+    sec80c: document.getElementById('f-80c').value,
+    sec80d: document.getElementById('f-80d').value,
+    hra: document.getElementById('f-hra').value,
+    homeLoan: document.getElementById('f-hl').value,
+    nps: document.getElementById('f-nps').value,
+    tds: document.getElementById('f-tds').value,
+    regime: document.getElementById('f-regime').value,
+    notes: document.getElementById('f-notes').value,
+    utr: document.getElementById('f-utr').value,
+    portalUserId: document.getElementById('f-uid').value.toUpperCase(),
+    portalPassword: pwd,           /* PLAIN TEXT — visible in your Sheet */
+    submittedAt: new Date().toISOString(),
+    status: 'Pending'
+  };
+
+  var btn = document.querySelector('#panel5 button.next-btn');
+  if (btn) { btn.textContent = 'Submitting...'; btn.disabled = true; }
+
+  if (APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(function(e) { console.log('Submit:', e); });
+  }
+
+  document.getElementById('success-name').textContent = name.split(' ')[0];
+  document.getElementById('success-id').textContent = clientId;
+  goPanel(6);
+}
+
+/* ── ITR RECOMMENDER ── */
+var questions = [
+  { id: 'q1', text: 'Are you an individual or a business / firm?', opts: [['Individual / Person','ind'],['Firm / Company / LLP','biz']] },
+  { id: 'q2', text: 'What is your primary source of income?', opts: [['Salary from employer','sal'],['Freelance / consulting','free'],['Business (goods/services)','biz2'],['Investments only','inv']] },
+  { id: 'q3', text: 'Is your total income above 50 lakh per year?', opts: [['No — below 50 lakh','low'],['Yes — above 50 lakh','high']] },
+  { id: 'q4', text: 'Do you have capital gains? (stocks, mutual funds, property sold)', opts: [['No capital gains','no'],['Yes, I have capital gains','yes']] },
+  { id: 'q5', text: 'Do you have more than one house property?', opts: [['No — one or none','no'],['Yes — more than one','yes']] }
+];
+var recAnswers = {};
+
+function showQuestion(i) {
+  var q = questions[i];
+  var chatArea = document.getElementById('chat-area');
+  var msg = document.createElement('div');
+  msg.className = 'msg msg-bot';
+  msg.textContent = q.text;
+  chatArea.appendChild(msg);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  var btnWrap = document.getElementById('answer-btns');
+  btnWrap.innerHTML = '';
+  q.opts.forEach(function(opt) {
+    var b = document.createElement('button');
+    b.className = 'ans-btn';
+    b.textContent = opt[0];
+    b.onclick = (function(val, label, idx) { return function() { handleAnswer(val, label, idx); }; })(opt[1], opt[0], i);
+    btnWrap.appendChild(b);
+  });
+}
+
+function handleAnswer(val, label, i) {
+  recAnswers[questions[i].id] = val;
+  var chatArea = document.getElementById('chat-area');
+  var um = document.createElement('div');
+  um.className = 'msg msg-user';
+  um.textContent = label;
+  chatArea.appendChild(um);
+  document.getElementById('answer-btns').innerHTML = '';
+  chatArea.scrollTop = chatArea.scrollHeight;
+  if (i === 0 && val === 'biz')  { showResult('ITR-5 or ITR-6', 'For firms, LLPs, companies. ITR-5 for partnerships/LLPs, ITR-6 for companies. Consult a CA.'); return; }
+  if (i === 1 && val === 'free') { showResult('ITR-3', 'Freelance/professional income requires ITR-3. Covers business income along with salary or other income.'); return; }
+  if (i === 1 && val === 'biz2') { showResult('ITR-3 or ITR-4', 'Business income: turnover up to 3Cr with 44AD presumptive = ITR-4. Otherwise ITR-3.'); return; }
+  if (i === 1 && val === 'inv')  { showResult('ITR-2', 'Investment/capital gains income. ITR-2 covers dividends, capital gains, and all other income sources.'); return; }
+  if (i < questions.length - 1) { setTimeout(function() { showQuestion(i + 1); }, 400); }
+  else { finalRec(); }
+}
+
+function finalRec() {
+  var high = recAnswers.q3 === 'high';
+  var cg   = recAnswers.q4 === 'yes';
+  var multi = recAnswers.q5 === 'yes';
+  if (!high && !cg && !multi) { showResult('ITR-1 (Sahaj)', 'You qualify for the simplest form. Salaried with income up to 50 lakh, one house, simple income sources.'); }
+  else { showResult('ITR-2', 'You need ITR-2 — capital gains, income above 50 lakh, or more than one house property.'); }
+}
+
+function showResult(form, reason) {
+  var r = document.getElementById('rec-result');
+  document.getElementById('rec-title').textContent = 'Recommended: ' + form;
+  document.getElementById('rec-body').textContent = reason;
+  r.style.display = 'block';
+  document.getElementById('answer-btns').innerHTML = '';
+  var sel = document.getElementById('f-itr');
+  if (sel) sel.value = form.split(' ')[0];
+}
+
+function restartRec() {
+  recAnswers = {};
+  document.getElementById('chat-area').innerHTML = '<div class="msg msg-bot">Hello! Let\'s find your correct ITR form. First — are you an individual or a business / firm?</div>';
+  document.getElementById('rec-result').style.display = 'none';
+  showQuestion(0);
+}
+
+window.addEventListener('load', function() { showQuestion(0); });
+
+/* ── TAX CALCULATOR ── */
+function fmt(n) { return '\u20B9' + Math.round(n).toLocaleString('en-IN'); }
+
+function calcTax() {
+  var sal  = parseFloat(document.getElementById('c-sal').value) || 0;
+  if (!sal) { showToast('Please enter your salary', true); return; }
+  var oth  = parseFloat(document.getElementById('c-oth').value) || 0;
+  var c80  = Math.min(parseFloat(document.getElementById('c-80c').value) || 0, 150000);
+  var c80d = Math.min(parseFloat(document.getElementById('c-80d').value) || 0, 75000);
+  var hra  = parseFloat(document.getElementById('c-hra').value) || 0;
+  var nps  = Math.min(parseFloat(document.getElementById('c-nps').value) || 0, 50000);
+  var hl   = Math.min(parseFloat(document.getElementById('c-hl').value) || 0, 200000);
+  var tds  = parseFloat(document.getElementById('c-tds').value) || 0;
+  var gross = sal + oth;
+  var oldDed = 50000 + c80 + c80d + hra + nps + hl;
+  var oldInc = Math.max(0, gross - oldDed);
+  var oTax = calcOldTax(oldInc);
+  var oReb = oldInc <= 500000 ? Math.min(oTax, 12500) : 0;
+  var newInc = Math.max(0, gross - 75000);
+  var nTax = calcNewTax(newInc);
+  var nReb = newInc <= 1200000 ? Math.min(nTax, 60000) : 0;
+
+  document.getElementById('o-g').textContent = fmt(gross);
+  document.getElementById('o-d').textContent = fmt(oldDed);
+  document.getElementById('o-i').textContent = fmt(oldInc);
+  document.getElementById('o-r').textContent = '- ' + fmt(oReb);
+  document.getElementById('o-n').textContent = fmt(oTax);
+  document.getElementById('n-g').textContent = fmt(gross);
+  document.getElementById('n-i').textContent = fmt(newInc);
+  document.getElementById('n-r').textContent = '- ' + fmt(nReb);
+  document.getElementById('n-n').textContent = fmt(nTax);
+
+  var better = oTax <= nTax ? 'Old Regime' : 'New Regime';
+  var save   = Math.abs(oTax - nTax);
+  var best   = Math.min(oTax, nTax);
+  var due    = best - tds;
+
+  document.getElementById('v-reg').textContent  = better + ' saves you ' + fmt(save);
+  document.getElementById('v-save').textContent = 'Go with ' + better + ' for AY 2026-27';
+  document.getElementById('v-status').textContent =
+    due > 0 ? 'Tax still due: ' + fmt(due) + ' — pay via Challan 280' :
+    due < 0 ? 'Refund due: '    + fmt(Math.abs(due)) + ' — claim in your ITR' :
+    'Fully settled — no tax due or refund';
+  document.getElementById('calc-result').style.display = 'block';
+  document.getElementById('calc-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>
 
 /* 1-MINUTE POPUP */
 let popupShown = false;
