@@ -643,52 +643,104 @@ footer a { color: #6b9fff; text-decoration: none; }
           </select>
         </div>
 
-        <div style="border-top:1px solid #30363d;margin:18px 0 14px;padding-top:14px">
-          <div style="font-size:12px;font-weight:600;color:#6b9fff;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em">IT Portal credentials</div>
-          <div class="warning-box" style="margin-bottom:14px">
-            🔐 Your credentials are used only to file your ITR. Password is stored securely in our private Sheet — only you and we can see it. Change your password after filing is complete.
-          </div>
-          <div class="two-col">
-            <div class="ifg">
-              <label>Portal User ID (PAN)</label>
-              <input type="text" id="f-uid" placeholder="Your PAN — same as above" style="font-family:'DM Mono',monospace;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
-            </div>
-            <div class="ifg">
-              <label>Portal Password — <span style="color:#3fb950;font-weight:600">visible for your verification</span></label>
-              <div style="position:relative">
-                <input type="text" id="f-pwd" placeholder="Your incometax.gov.in password" style="width:100%;padding-right:60px">
-                <button onclick="togglePwd('f-pwd','eye1')" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#21262d;border:none;border-radius:4px;cursor:pointer;color:#8b9ab0;font-size:11px;padding:3px 7px" id="eye1">Hide</button>
-              </div>
-            </div>
-          </div>
-          <div class="two-col">
-            <div class="ifg">
-              <label>Confirm password</label>
-              <div style="position:relative">
-                <input type="text" id="f-pwd2" placeholder="Re-enter to confirm" style="width:100%;padding-right:60px">
-                <button onclick="togglePwd('f-pwd2','eye2')" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#21262d;border:none;border-radius:4px;cursor:pointer;color:#8b9ab0;font-size:11px;padding:3px 7px" id="eye2">Hide</button>
-              </div>
-            </div>
-            <div class="ifg" style="display:flex;align-items:flex-end">
-              <div id="pwd-match-status" style="width:100%;padding:10px 12px;border-radius:8px;font-size:12px;background:#21262d;color:#484f58">
-                Enter password in both fields to verify match
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- CREDENTIALS + 26AS UPLOAD — combined card -->
+        <div style="border-top:1px solid #30363d;margin:18px 0 0;padding-top:18px">
 
-        <div style="border-top:1px solid #30363d;margin:18px 0 14px;padding-top:14px">
-          <div style="font-size:12px;font-weight:600;color:#6b9fff;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">Upload Form 26AS — auto-fills your income data</div>
-          <div style="background:#0d1117;border:1.5px dashed #30363d;border-radius:10px;padding:20px;text-align:center;cursor:pointer" onclick="document.getElementById('f-26as').click()" id="upload-zone">
-            <div style="font-size:22px;margin-bottom:6px">📄</div>
-            <div style="font-size:13px;color:#e6edf3;font-weight:500">Click to upload Form 26AS PDF</div>
-            <div style="font-size:11px;color:#484f58;margin-top:4px">We will auto-extract your salary, TDS, and employer details</div>
+          <!-- Header -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#e6edf3">IT Portal Login + Documents</div>
+              <div style="font-size:11px;color:#484f58;margin-top:2px">Enter your incometax.gov.in credentials — then upload your Form 26AS to auto-fill your income data</div>
+            </div>
+            <div style="background:#1a2d1a;border:1px solid #3fb950;border-radius:6px;padding:4px 10px;font-size:10px;color:#3fb950;font-weight:600;letter-spacing:0.06em">SAVED TO YOUR SHEET</div>
+          </div>
+
+          <!-- Credentials box -->
+          <div style="background:#0d1117;border:1px solid #30363d;border-radius:12px;padding:16px;margin-bottom:12px">
+
+            <div style="font-size:10px;font-weight:600;color:#484f58;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px">incometax.gov.in credentials</div>
+
+            <div class="two-col">
+              <div class="ifg">
+                <label>User ID <span style="color:#484f58;font-weight:400">(your PAN)</span></label>
+                <input type="text" id="f-uid" placeholder="ABCDE1234F" maxlength="10"
+                  style="font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;font-size:15px;background:#161b22;border-color:#30363d;color:#e6edf3"
+                  oninput="this.value=this.value.toUpperCase();syncPortalUid()">
+              </div>
+              <div class="ifg">
+                <label>Password — <span style="color:#3fb950;font-weight:600;font-size:10px">visible · saved to your private sheet</span></label>
+                <div style="position:relative">
+                  <input type="text" id="f-pwd" placeholder="Your portal password"
+                    style="width:100%;padding-right:58px;background:#161b22;border-color:#30363d;color:#e6edf3;font-family:'DM Mono',monospace;letter-spacing:0.05em"
+                    oninput="checkPwdMatch()">
+                  <button onclick="togglePwd('f-pwd','eye1')"
+                    style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#21262d;border:1px solid #30363d;border-radius:4px;cursor:pointer;color:#8b9ab0;font-size:10px;padding:3px 8px;font-family:'DM Sans',sans-serif"
+                    id="eye1">Hide</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="two-col">
+              <div class="ifg">
+                <label>Confirm password</label>
+                <div style="position:relative">
+                  <input type="text" id="f-pwd2" placeholder="Re-enter to confirm"
+                    style="width:100%;padding-right:58px;background:#161b22;border-color:#30363d;color:#e6edf3;font-family:'DM Mono',monospace;letter-spacing:0.05em"
+                    oninput="checkPwdMatch()">
+                  <button onclick="togglePwd('f-pwd2','eye2')"
+                    style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#21262d;border:1px solid #30363d;border-radius:4px;cursor:pointer;color:#8b9ab0;font-size:10px;padding:3px 8px;font-family:'DM Sans',sans-serif"
+                    id="eye2">Hide</button>
+                </div>
+              </div>
+              <div class="ifg" style="display:flex;align-items:flex-end">
+                <div id="pwd-match-status" style="width:100%;padding:10px 12px;border-radius:8px;font-size:12px;background:#21262d;border:1px solid #30363d;color:#484f58;transition:all 0.2s">
+                  Enter both passwords to verify
+                </div>
+              </div>
+            </div>
+
+            <!-- Sheet preview strip -->
+            <div style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:10px 14px;margin-top:4px">
+              <div style="font-size:10px;color:#484f58;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Preview — how it appears in your Google Sheet</div>
+              <div style="display:grid;grid-template-columns:80px 1fr 80px 1fr;gap:4px 12px;font-size:11px">
+                <span style="color:#484f58">Col W</span><span id="sheet-uid" style="color:#6b9fff;font-family:'DM Mono',monospace">—</span>
+                <span style="color:#484f58">Col X</span><span id="sheet-pwd" style="color:#3fb950;font-family:'DM Mono',monospace">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider with arrow connecting credentials to upload -->
+          <div style="display:flex;align-items:center;gap:10px;margin:10px 0">
+            <div style="flex:1;border-top:1px dashed #30363d"></div>
+            <div style="background:#1a3fcb22;border:1px solid #1a3fcb55;border-radius:20px;padding:4px 12px;font-size:11px;color:#6b9fff;white-space:nowrap">
+              ↓ Now upload Form 26AS to auto-fill your income
+            </div>
+            <div style="flex:1;border-top:1px dashed #30363d"></div>
+          </div>
+
+          <!-- Form 26AS upload — attached right below credentials -->
+          <div id="upload-zone"
+            style="background:#0d1117;border:1.5px dashed #1a3fcb55;border-radius:12px;padding:18px 16px;cursor:pointer;transition:border-color 0.2s;display:flex;align-items:center;gap:14px"
+            onclick="document.getElementById('f-26as').click()"
+            onmouseover="this.style.borderColor='#6b9fff'" onmouseout="this.style.borderColor='#1a3fcb55'">
+            <div style="width:44px;height:44px;background:#1a3fcb22;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">📄</div>
+            <div style="flex:1">
+              <div style="font-size:13px;color:#e6edf3;font-weight:600;margin-bottom:2px">Upload Form 26AS / Annual Tax Statement</div>
+              <div style="font-size:11px;color:#484f58">PDF or HTML — auto-extracts salary, TDS, employer name, PAN</div>
+            </div>
+            <div style="background:#1a3fcb;color:#fff;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;flex-shrink:0">Browse</div>
             <input type="file" id="f-26as" accept=".pdf,.html,.txt" style="display:none" onchange="parse26AS(this)">
           </div>
-          <div id="parse-status" style="display:none;margin-top:10px;background:#1a2d1a;border:1px solid #3fb950;border-radius:8px;padding:12px;font-size:12px;color:#56d364;line-height:1.7"></div>
+
+          <!-- Parse result -->
+          <div id="parse-status" style="display:none;margin-top:10px;background:#0d2010;border:1px solid #3fb950;border-radius:10px;padding:14px;font-size:12px;color:#56d364;line-height:1.8"></div>
+
+          <div style="margin-top:10px;font-size:11px;color:#484f58;line-height:1.6;padding:0 4px">
+            🔒 Your credentials and documents are stored only in your private Google Drive and Sheet. We never share them with any third party. Change your portal password after filing.
+          </div>
         </div>
 
-        <button class="next-btn" onclick="goPanel(2)">Next: Income details →</button>
+        <button class="next-btn" style="margin-top:18px" onclick="goPanel(2)">Next: Income details →</button>
       </div>
 
       <!-- ── PANEL 2: Income & deductions ── -->
@@ -929,20 +981,35 @@ function togglePwd(inputId, btnId) {
   else { input.type = 'text'; btn.textContent = 'Hide'; }
 }
 
-/* ── PASSWORD LIVE MATCH CHECK ── */
+/* ── PASSWORD LIVE MATCH CHECK + SHEET PREVIEW ── */
+function syncPortalUid() {
+  var val = document.getElementById('f-uid').value || '—';
+  var el = document.getElementById('sheet-uid');
+  if (el) el.textContent = val;
+}
 function checkPwdMatch() {
   var p1 = document.getElementById('f-pwd').value;
   var p2 = document.getElementById('f-pwd2').value;
   var box = document.getElementById('pwd-match-status');
-  if (!p1 && !p2) { box.textContent = 'Enter password in both fields to verify match'; box.style.color = '#484f58'; box.style.background = '#21262d'; box.style.border = '1px solid #30363d'; return; }
-  if (p2.length === 0) { box.textContent = 'Re-enter in confirm field to verify'; box.style.color = '#8b9ab0'; box.style.background = '#21262d'; box.style.border = '1px solid #30363d'; return; }
-  if (p1 === p2) { box.textContent = 'Passwords match'; box.style.color = '#3fb950'; box.style.background = '#0d2d18'; box.style.border = '1px solid #3fb950'; }
-  else { box.textContent = 'Passwords do not match'; box.style.color = '#e24b4a'; box.style.background = '#2d0d0d'; box.style.border = '1px solid #e24b4a'; }
+  var sheetPwd = document.getElementById('sheet-pwd');
+  /* Update sheet preview */
+  if (sheetPwd) sheetPwd.textContent = p1 || '—';
+  if (!p1 && !p2) {
+    box.textContent = 'Enter both passwords to verify';
+    box.style.color = '#484f58'; box.style.background = '#21262d'; box.style.borderColor = '#30363d'; return;
+  }
+  if (!p2) {
+    box.textContent = 'Re-enter in confirm field';
+    box.style.color = '#8b9ab0'; box.style.background = '#21262d'; box.style.borderColor = '#30363d'; return;
+  }
+  if (p1 === p2) {
+    box.textContent = '✓ Passwords match — ready to proceed';
+    box.style.color = '#3fb950'; box.style.background = '#0d2d18'; box.style.borderColor = '#3fb950';
+  } else {
+    box.textContent = '✗ Passwords do not match';
+    box.style.color = '#e24b4a'; box.style.background = '#2d0d0d'; box.style.borderColor = '#e24b4a';
+  }
 }
-window.addEventListener('load', function() {
-  document.getElementById('f-pwd').addEventListener('input', checkPwdMatch);
-  document.getElementById('f-pwd2').addEventListener('input', checkPwdMatch);
-});
 
 /* ── SYNC FIELD TO PREVIEW ── */
 var previewMap = {
