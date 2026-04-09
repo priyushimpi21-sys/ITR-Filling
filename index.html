@@ -736,96 +736,97 @@ footer a { color: #6b9fff; text-decoration: none; }
     <span class="popup-skip" onclick="closePopup()">No thanks, I'll do it myself</span>
     <div class="popup-timer" id="popup-timer"></div>
   </div>
-</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- ── APPS SCRIPT WEB APP URL — REPLACE THIS ── -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ── SHOW/HIDE PASSWORD ── */
-function togglePwd(inputId, btnId) {
-  const input = document.getElementById(inputId);
-  const btn = document.getElementById(btnId);
-  if (input.type === 'text') {
-    input.type = 'password';
-    btn.textContent = '👁 Show';
-  } else {
-    input.type = 'text';
-    btn.textContent = '🙈 Hide';
-  }
-}
-
+<script>
 const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
 const UPI_ID = 'priyushimpi21@okicici';
 const UPI_NAME = 'FileMy ITR';
 const AMOUNT = 50;
 
-/* ── QR CODE ── */
+/* QR CODE */
 function makeQR() {
-  const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${AMOUNT}&cu=INR&tn=ITR+Filing+Fee`;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+  const upiLink = 'upi://pay?pa=' + UPI_ID + '&pn=' + encodeURIComponent(UPI_NAME) + '&am=' + AMOUNT + '&cu=INR&tn=ITR+Filing+Fee';
+  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(upiLink);
   document.getElementById('upi-qr').src = qrUrl;
   document.getElementById('upi-display').textContent = UPI_ID;
 }
 makeQR();
 
-/* ── 1-MINUTE POPUP ── */
+/* 1-MINUTE POPUP */
 let popupShown = false;
-setTimeout(() => {
+setTimeout(function() {
   if (!popupShown) { document.getElementById('popup').classList.add('show'); popupShown = true; }
 }, 60000);
 function closePopup() { document.getElementById('popup').classList.remove('show'); }
 function closePopupAndScroll() { closePopup(); document.getElementById('file-itr').scrollIntoView({ behavior: 'smooth' }); }
 
-/* ── TOAST ── */
+/* TOAST */
 function showToast(msg) {
-  const t = document.getElementById('toast');
+  var t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
+  setTimeout(function() { t.classList.remove('show'); }, 3200);
 }
 
-/* ── PANEL NAVIGATION ── */
+/* SHOW/HIDE PASSWORD */
+function togglePwd(inputId, btnId) {
+  var input = document.getElementById(inputId);
+  var btn = document.getElementById(btnId);
+  if (input.type === 'text') {
+    input.type = 'password';
+    btn.textContent = 'Show';
+  } else {
+    input.type = 'text';
+    btn.textContent = 'Hide';
+  }
+}
+
+/* PANEL NAVIGATION */
 function goPanel(n) {
   if (n === 2) {
-    const name = document.getElementById('f-name').value.trim();
-    const pan = document.getElementById('f-pan').value.trim();
-    const email = document.getElementById('f-email').value.trim();
-    const mobile = document.getElementById('f-mobile').value.trim();
+    var name = document.getElementById('f-name').value.trim();
+    var pan = document.getElementById('f-pan').value.trim();
+    var email = document.getElementById('f-email').value.trim();
+    var mobile = document.getElementById('f-mobile').value.trim();
     if (!name || !pan || !email || !mobile) { showToast('Please fill all required fields'); return; }
     if (pan.length !== 10) { showToast('PAN must be 10 characters'); return; }
   }
-  document.querySelectorAll('.intake-panel').forEach((p, i) => p.classList.toggle('active', i === n - 1));
-  document.querySelectorAll('.istep').forEach((t, i) => {
+  document.querySelectorAll('.intake-panel').forEach(function(p, i) {
+    p.classList.toggle('active', i === n - 1);
+  });
+  document.querySelectorAll('.istep').forEach(function(t, i) {
     t.classList.remove('active', 'done');
     if (i < n - 1) t.classList.add('done');
     if (i === n - 1) t.classList.add('active');
   });
 }
 
-/* ── VERIFY PAYMENT ── */
+/* VERIFY PAYMENT */
 function verifyPayment() {
-  const utr = document.getElementById('f-utr').value.trim();
+  var utr = document.getElementById('f-utr').value.trim();
   if (!utr || utr.length < 6) { showToast('Please enter a valid UTR / Transaction ID'); return; }
   showToast('Payment recorded! Proceeding...');
-  setTimeout(() => goPanel(4), 800);
+  setTimeout(function() { goPanel(4); }, 800);
 }
 
-/* ── SUBMIT ALL ── */
-async function submitAll() {
-  const pwd = document.getElementById('f-pwd').value;
-  const pwd2 = document.getElementById('f-pwd2').value;
+/* SUBMIT ALL */
+function submitAll() {
+  var pwd = document.getElementById('f-pwd').value;
+  var pwd2 = document.getElementById('f-pwd2').value;
   if (!pwd || pwd !== pwd2) { showToast('Passwords do not match'); return; }
   if (pwd.length < 6) { showToast('Password seems too short'); return; }
 
-  const clientId = document.getElementById('f-pan').value.toUpperCase() + '_' + Date.now().toString().slice(-4);
-  const name = document.getElementById('f-name').value;
+  var pan = document.getElementById('f-pan').value.toUpperCase();
+  var name = document.getElementById('f-name').value;
+  var clientId = pan + '_' + Date.now().toString().slice(-4);
 
-  const payload = {
-    clientId,
-    name,
-    pan: document.getElementById('f-pan').value.toUpperCase(),
+  var payload = {
+    clientId: clientId,
+    name: name,
+    pan: pan,
     dob: document.getElementById('f-dob').value,
     mobile: document.getElementById('f-mobile').value,
     email: document.getElementById('f-email').value,
@@ -842,155 +843,155 @@ async function submitAll() {
     notes: document.getElementById('f-notes').value,
     utr: document.getElementById('f-utr').value,
     portalUserId: document.getElementById('f-uid').value.toUpperCase(),
-    portalPassword: document.getElementById('f-pwd').value,
+    portalPassword: pwd,
     submittedAt: new Date().toISOString(),
     status: 'Pending'
   };
 
-  document.querySelector('#panel4 .next-btn').textContent = 'Submitting...';
-  document.querySelector('#panel4 .next-btn').disabled = true;
+  var submitBtn = document.querySelector('#panel4 .next-btn');
+  submitBtn.textContent = 'Submitting...';
+  submitBtn.disabled = true;
 
-  try {
-    if (APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
-      await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-    }
-  } catch (e) { console.log('Submission note:', e); }
+  if (APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(function(e) { console.log('Submit note:', e); });
+  }
 
   document.getElementById('success-name').textContent = name.split(' ')[0];
   document.getElementById('success-id').textContent = clientId;
   goPanel(5);
 }
 
-/* ── ITR RECOMMENDER ── */
-const questions = [
+/* ITR RECOMMENDER */
+var questions = [
   { id: 'q1', text: 'Are you an individual or a business / firm?', opts: [['Individual / Person','ind'],['Firm / Company / LLP','biz']] },
   { id: 'q2', text: 'What is your primary source of income?', opts: [['Salary from employer','sal'],['Freelance / consulting','free'],['Business (goods/services)','biz2'],['Investments only','inv']] },
-  { id: 'q3', text: 'Is your total income above ₹50 lakh per year?', opts: [['No — below ₹50 lakh','low'],['Yes — above ₹50 lakh','high']] },
+  { id: 'q3', text: 'Is your total income above 50 lakh per year?', opts: [['No — below 50 lakh','low'],['Yes — above 50 lakh','high']] },
   { id: 'q4', text: 'Do you have capital gains? (stocks, mutual funds, property sold)', opts: [['No capital gains','no'],['Yes, I have capital gains','yes']] },
-  { id: 'q5', text: 'Do you have more than one house property?', opts: [['No — one or none','no'],['Yes — more than one','yes']] },
+  { id: 'q5', text: 'Do you have more than one house property?', opts: [['No — one or none','no'],['Yes — more than one','yes']] }
 ];
-let qIdx = 0, answers = {};
-function startRec() {
-  qIdx = 0; answers = {};
-  showQuestion(0);
-}
+var answers = {};
+
 function showQuestion(i) {
-  const q = questions[i];
-  const chatArea = document.getElementById('chat-area');
-  const msg = document.createElement('div');
+  var q = questions[i];
+  var chatArea = document.getElementById('chat-area');
+  var msg = document.createElement('div');
   msg.className = 'msg msg-bot';
   msg.textContent = q.text;
   chatArea.appendChild(msg);
   chatArea.scrollTop = chatArea.scrollHeight;
-  const btnWrap = document.getElementById('answer-btns');
+  var btnWrap = document.getElementById('answer-btns');
   btnWrap.innerHTML = '';
-  q.opts.forEach(([label, val]) => {
-    const b = document.createElement('button');
+  q.opts.forEach(function(opt) {
+    var b = document.createElement('button');
     b.className = 'ans-btn';
-    b.textContent = label;
-    b.onclick = () => handleAnswer(val, label, i);
+    b.textContent = opt[0];
+    b.onclick = (function(val, label, idx) {
+      return function() { handleAnswer(val, label, idx); };
+    })(opt[1], opt[0], i);
     btnWrap.appendChild(b);
   });
 }
+
 function handleAnswer(val, label, i) {
   answers[questions[i].id] = val;
-  const chatArea = document.getElementById('chat-area');
-  const um = document.createElement('div');
+  var chatArea = document.getElementById('chat-area');
+  var um = document.createElement('div');
   um.className = 'msg msg-user';
   um.textContent = label;
   chatArea.appendChild(um);
   document.getElementById('answer-btns').innerHTML = '';
   chatArea.scrollTop = chatArea.scrollHeight;
-  // logic
-  if (i === 0 && val === 'biz') { showResult('ITR-5 or ITR-6', 'For firms, LLPs, and companies. ITR-5 for partnership firms/LLPs, ITR-6 for companies. Please consult a CA for business returns.'); return; }
-  if (i === 1 && val === 'free') { showResult('ITR-3', 'You have freelance / professional income. ITR-3 is required for individuals with business or professional income along with any other income.'); return; }
-  if (i === 1 && val === 'biz2') { showResult('ITR-3 or ITR-4', 'For business income. If your turnover is ≤ ₹3 Cr and you opt for presumptive taxation under Sec 44AD, use ITR-4 (Sugam). Otherwise use ITR-3.'); return; }
-  if (i === 1 && val === 'inv') { showResult('ITR-2', 'For investment income (capital gains, dividends). Since you don\'t have a salary, ITR-2 covers capital gains and other income sources.'); return; }
-  if (i < questions.length - 1) { setTimeout(() => showQuestion(i + 1), 400); }
+
+  if (i === 0 && val === 'biz') { showResult('ITR-5 or ITR-6', 'For firms, LLPs, and companies. ITR-5 for partnership firms/LLPs, ITR-6 for companies. Consult a CA for business returns.'); return; }
+  if (i === 1 && val === 'free') { showResult('ITR-3', 'You have freelance/professional income. ITR-3 is required for individuals with business or professional income.'); return; }
+  if (i === 1 && val === 'biz2') { showResult('ITR-3 or ITR-4', 'For business income. Turnover <= 3 Cr with presumptive tax (44AD) = ITR-4. Otherwise ITR-3.'); return; }
+  if (i === 1 && val === 'inv') { showResult('ITR-2', 'For investment income with capital gains and dividends. ITR-2 covers all these.'); return; }
+  if (i < questions.length - 1) { setTimeout(function() { showQuestion(i + 1); }, 400); }
   else { finalRec(); }
 }
+
 function finalRec() {
-  const high = answers.q3 === 'high';
-  const cg = answers.q4 === 'yes';
-  const multi = answers.q5 === 'yes';
-  if (!high && !cg && !multi) { showResult('ITR-1 (Sahaj)', 'Great news! You qualify for the simplest form. ITR-1 is for salaried individuals with income up to ₹50 lakh, one house, and other simple income sources.'); }
-  else { showResult('ITR-2', 'You need ITR-2 because you have either capital gains, income above ₹50 lakh, or more than one house property. ITR-2 covers all these scenarios.'); }
+  var high = answers.q3 === 'high';
+  var cg = answers.q4 === 'yes';
+  var multi = answers.q5 === 'yes';
+  if (!high && !cg && !multi) {
+    showResult('ITR-1 (Sahaj)', 'You qualify for the simplest form. ITR-1 is for salaried individuals with income up to 50 lakh, one house, and simple income sources.');
+  } else {
+    showResult('ITR-2', 'You need ITR-2 because you have capital gains, income above 50 lakh, or more than one house property.');
+  }
 }
+
 function showResult(form, reason) {
-  const r = document.getElementById('rec-result');
+  var r = document.getElementById('rec-result');
   document.getElementById('rec-title').textContent = 'Recommended: ' + form;
   document.getElementById('rec-body').textContent = reason;
   r.style.display = 'block';
   document.getElementById('answer-btns').innerHTML = '';
-  document.getElementById('f-itr').value = form.split(' ')[0];
+  var itrSelect = document.getElementById('f-itr');
+  if (itrSelect) itrSelect.value = form.split(' ')[0];
 }
-// Init recommender
-(function() {
-  const btnWrap = document.getElementById('answer-btns');
-  btnWrap.innerHTML = '';
-  questions[0].opts.forEach(([label, val]) => {
-    const b = document.createElement('button');
-    b.className = 'ans-btn';
-    b.textContent = label;
-    b.onclick = () => handleAnswer(val, label, 0);
-    btnWrap.appendChild(b);
-  });
-})();
 
 function restartRec() {
-  document.getElementById('chat-area').innerHTML = '<div class="msg msg-bot">Hello! 👋 Let\'s find your correct ITR form. First — are you an individual or a business / firm?</div>';
+  answers = {};
+  document.getElementById('chat-area').innerHTML = '<div class="msg msg-bot">Hello! Let\'s find your correct ITR form. First — are you an individual or a business / firm?</div>';
   document.getElementById('rec-result').style.display = 'none';
-  const btnWrap = document.getElementById('answer-btns');
-  btnWrap.innerHTML = '';
-  questions[0].opts.forEach(([label, val]) => {
-    const b = document.createElement('button');
-    b.className = 'ans-btn';
-    b.textContent = label;
-    b.onclick = () => handleAnswer(val, label, 0);
-    btnWrap.appendChild(b);
-  });
+  showQuestion(0);
 }
 
-/* ── TAX CALCULATOR ── */
-function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+/* Init recommender on page load */
+window.addEventListener('load', function() {
+  showQuestion(0);
+});
+
+/* TAX CALCULATOR */
+function fmt(n) { return '\u20B9' + Math.round(n).toLocaleString('en-IN'); }
+
 function oldTax(inc) {
-  let t = 0;
+  var t = 0;
   if (inc > 1000000) t = 112500 + (inc - 1000000) * 0.30;
   else if (inc > 500000) t = 12500 + (inc - 500000) * 0.20;
   else if (inc > 250000) t = (inc - 250000) * 0.05;
-  const reb = inc <= 500000 ? Math.min(t, 12500) : 0;
+  var reb = inc <= 500000 ? Math.min(t, 12500) : 0;
   t -= reb;
-  return { reb, net: Math.round(t + t * 0.04) };
+  return { reb: reb, net: Math.round(t + t * 0.04) };
 }
+
 function newTax(inc) {
-  const slabs = [[400000,0],[400000,.05],[400000,.10],[400000,.15],[400000,.20],[400000,.25],[Infinity,.30]];
-  let t = 0, rem = inc;
-  for (const [s, r] of slabs) { if (rem <= 0) break; t += Math.min(rem, s) * r; rem -= s; }
-  const reb = inc <= 1200000 ? Math.min(t, 60000) : 0;
+  var slabs = [[400000,0],[400000,0.05],[400000,0.10],[400000,0.15],[400000,0.20],[400000,0.25],[Infinity,0.30]];
+  var t = 0, rem = inc;
+  slabs.forEach(function(s) {
+    if (rem <= 0) return;
+    t += Math.min(rem, s[0]) * s[1];
+    rem -= s[0];
+  });
+  var reb = inc <= 1200000 ? Math.min(t, 60000) : 0;
   t -= reb;
-  return { reb, net: Math.round(t + t * 0.04) };
+  return { reb: reb, net: Math.round(t + t * 0.04) };
 }
+
 function calcTax() {
-  const sal = +document.getElementById('c-sal').value || 0;
+  var sal = parseFloat(document.getElementById('c-sal').value) || 0;
   if (!sal) { showToast('Please enter your salary'); return; }
-  const oth = +document.getElementById('c-oth').value || 0;
-  const c80 = Math.min(+document.getElementById('c-80c').value || 0, 150000);
-  const c80d = Math.min(+document.getElementById('c-80d').value || 0, 75000);
-  const hra = +document.getElementById('c-hra').value || 0;
-  const nps = Math.min(+document.getElementById('c-nps').value || 0, 50000);
-  const hl = Math.min(+document.getElementById('c-hl').value || 0, 200000);
-  const tds = +document.getElementById('c-tds').value || 0;
-  const gross = sal + oth;
-  const oldDed = 50000 + c80 + c80d + hra + nps + hl;
-  const oldInc = Math.max(0, gross - oldDed);
-  const oR = oldTax(oldInc);
-  const newInc = Math.max(0, gross - 75000);
-  const nR = newTax(newInc);
+  var oth  = parseFloat(document.getElementById('c-oth').value) || 0;
+  var c80  = Math.min(parseFloat(document.getElementById('c-80c').value) || 0, 150000);
+  var c80d = Math.min(parseFloat(document.getElementById('c-80d').value) || 0, 75000);
+  var hra  = parseFloat(document.getElementById('c-hra').value) || 0;
+  var nps  = Math.min(parseFloat(document.getElementById('c-nps').value) || 0, 50000);
+  var hl   = Math.min(parseFloat(document.getElementById('c-hl').value) || 0, 200000);
+  var tds  = parseFloat(document.getElementById('c-tds').value) || 0;
+
+  var gross  = sal + oth;
+  var oldDed = 50000 + c80 + c80d + hra + nps + hl;
+  var oldInc = Math.max(0, gross - oldDed);
+  var oR = oldTax(oldInc);
+  var newInc = Math.max(0, gross - 75000);
+  var nR = newTax(newInc);
+
   document.getElementById('o-g').textContent = fmt(gross);
   document.getElementById('o-d').textContent = fmt(oldDed);
   document.getElementById('o-i').textContent = fmt(oldInc);
@@ -1000,10 +1001,22 @@ function calcTax() {
   document.getElementById('n-i').textContent = fmt(newInc);
   document.getElementById('n-r').textContent = '- ' + fmt(nR.reb);
   document.getElementById('n-n').textContent = fmt(nR.net);
-  const better = oR.net <= nR.net ? 'Old Regime' : 'New Regime';
-  const save = Math.abs(oR.net - nR.net);
-  const best = Math.min(oR.net, nR.net);
-  const due = best - tds;
-  document.getElementById('v-reg').textContent = better + ' saves you ' + fmt(save);
+
+  var better = oR.net <= nR.net ? 'Old Regime' : 'New Regime';
+  var save   = Math.abs(oR.net - nR.net);
+  var best   = Math.min(oR.net, nR.net);
+  var due    = best - tds;
+
+  document.getElementById('v-reg').textContent  = better + ' saves you ' + fmt(save);
   document.getElementById('v-save').textContent = 'Go with ' + better + ' for AY 2026-27';
-  document.getElementById('v-status').textContent = due > 0 ? 'Tax still due: ' + fmt(due) + ' — pay via Challan 280' : due < 0 ? 'Refund due: ' + fmt(Math.abs(due)) + ' 
+  document.getElementById('v-status').textContent =
+    due > 0 ? 'Tax still due: ' + fmt(due) + ' — pay via Challan 280' :
+    due < 0 ? 'Refund due: '    + fmt(Math.abs(due)) + ' — claim in your ITR' :
+    'Fully settled — no tax due or refund';
+
+  document.getElementById('calc-result').style.display = 'block';
+  document.getElementById('calc-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>
